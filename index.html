@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tituladora-POH-TablasClaves · Administración FAT-UNASAM</title>
+<meta name="description" content="Generador de título, problemas, objetivos, hipótesis, operacionalización, matriz de consistencia, metodología y modelo gráfico para tesis cuantitativas de Administración (UNASAM).">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314305a'/%3E%3Cpath d='M9 10h14M16 10v13' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --navy:#14305a; --navy-2:#1d4479; --ink:#1b2333; --muted:#5d6779; --line:#dde2ea; --bg:#f4f6f9;
+  --card:#ffffff; --accent:#b8892b; --accent-soft:#f7efdd; --ok:#1f7a4d; --ok-soft:#e5f3eb; --warn:#a15c07; --warn-soft:#fdf1e1;
+  --err:#b42318; --radius:12px; --shadow:0 1px 2px rgba(20,48,90,.06),0 4px 16px rgba(20,48,90,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--navy-2)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Header */
+header.top{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logos{display:flex;align-items:center;gap:8px;background:#fff;border-radius:10px;padding:5px 10px;flex:none;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.logos img{height:36px;width:auto;display:block;object-fit:contain}
+.lsep{width:1px;height:28px;background:#d5dbe4}
+#themeSel{color:#fff;appearance:auto}
+#themeSel option{color:#1b2333;background:#fff}
+.credit a{color:var(--navy-2);font-weight:600;text-decoration:none}
+.credit a:hover{text-decoration:underline}
+/* Temas */
+[data-theme="esmeralda"]{--navy:#0f4c3a;--navy-2:#16684f;--accent:#b8892b}
+[data-theme="vino"]{--navy:#5a1d2e;--navy-2:#7a2a40;--accent:#c08a2d}
+[data-theme="oscuro"]{--navy:#0f1b2d;--navy-2:#6ea8fe;--ink:#e6eaf1;--muted:#9aa6b8;--line:#2a3547;--bg:#0b1220;--card:#131c2c;--accent-soft:#3a2f17;--ok-soft:#173a2a;--warn-soft:#3a2a12;color-scheme:dark}
+[data-theme="oscuro"] .inp,[data-theme="oscuro"] .choice,[data-theme="oscuro"] .topt,[data-theme="oscuro"] .icon-btn,[data-theme="oscuro"] .btn.sec,[data-theme="oscuro"] .stepper-wrap{background:#18233a;border-color:#2f3d55;color:var(--ink)}
+[data-theme="oscuro"] .vblock,[data-theme="oscuro"] .kpi div,[data-theme="oscuro"] .formula,[data-theme="oscuro"] .ed:hover,[data-theme="oscuro"] .ed:focus,[data-theme="oscuro"] .topt.on{background:#1a2740}
+[data-theme="oscuro"] label.f,[data-theme="oscuro"] .card h3,[data-theme="oscuro"] .step-head h2,[data-theme="oscuro"] .choice b,[data-theme="oscuro"] .poh-col h4,[data-theme="oscuro"] .mth h4,[data-theme="oscuro"] .kpi b{color:#dbe6f7}
+[data-theme="oscuro"] .st.cur{color:#dbe6f7}[data-theme="oscuro"] .st .n{background:#22304a}
+[data-theme="oscuro"] .tag{background:#22304a;color:#9cc2ff}
+[data-theme="oscuro"] .alert.info{background:#14243d;color:#cfe0fb;border-color:#26406a}
+[data-theme="oscuro"] .modal{background:#131c2c;color:var(--ink)}
+[data-theme="oscuro"] .ed.mod{background:#2c2614;border-color:#5a4a1e}
+[data-theme="oscuro"] .card[style]{background:var(--card)!important}
+.brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.2px}
+.brand p{margin:0;font-size:12px;opacity:.8}
+.top-actions{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.save-state{font-size:12px;opacity:.85;margin-right:6px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.save-dot{width:8px;height:8px;border-radius:50%;background:#6ee7a8;transition:background .3s}
+.save-dot.busy{background:#fcd34d}
+.hbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer;transition:background .15s,border-color .15s}
+.hbtn:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
+
+/* Stepper */
+.stepper-wrap{background:#fff;border-bottom:1px solid var(--line)}
+.stepper{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.st{flex:1 0 auto;display:flex;align-items:center;gap:8px;padding:12px 10px;border:0;background:none;cursor:pointer;color:var(--muted);font-size:13px;font-weight:600;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
+.st .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:#eef1f5;color:var(--muted);transition:background .2s,color .2s}
+.st.done .n{background:var(--ok-soft);color:var(--ok)}
+.st.cur{color:var(--navy);border-bottom-color:var(--accent)}
+.st.cur .n{background:var(--navy);color:#fff}
+.st:disabled{cursor:not-allowed;opacity:.55}
+.progress{height:3px;background:#eef1f5}
+.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--navy-2),var(--accent));width:0;transition:width .45s cubic-bezier(.2,.7,.2,1)}
+
+/* Layout */
+main{max-width:1180px;margin:0 auto;padding:24px 20px 40px}
+.step{animation:enter .32s cubic-bezier(.2,.7,.2,1)}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step-head{margin-bottom:18px}
+.step-head .kicker{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px}
+.step-head h2{margin:2px 0 4px;font-size:22px;color:var(--navy)}
+.step-head p{margin:0;color:var(--muted);max-width:760px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:16px}
+.card h3{margin:0 0 4px;font-size:16px;color:var(--navy)}
+.card .sub{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:860px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+
+/* Fields */
+label.f{display:block;font-size:13px;font-weight:600;margin-bottom:5px;color:#2b3446}
+.f small{font-weight:400;color:var(--muted)}
+.inp,select.inp,textarea.inp{width:100%;border:1px solid #cfd6e0;border-radius:8px;padding:9px 11px;background:#fff;transition:border-color .15s,box-shadow .15s;outline:none}
+textarea.inp{resize:vertical;min-height:74px;line-height:1.45}
+.inp:focus{border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(29,68,121,.14)}
+.inp.bad{border-color:#e7a29b}
+.hint{font-size:12.5px;color:var(--muted);margin-top:5px}
+.row{display:flex;gap:10px;align-items:flex-end}
+.row>.grow{flex:1}
+.w-art{width:96px;flex:none}
+
+/* Choice cards */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.choice{position:relative;border:1.5px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;background:#fff;transition:border-color .2s,box-shadow .2s,transform .2s}
+.choice:hover{border-color:#a9b7cc;transform:translateY(-1px)}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice.on{border-color:var(--navy);box-shadow:0 0 0 3px rgba(20,48,90,.1)}
+.choice.on::after{content:"✓";position:absolute;top:12px;right:14px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;display:grid;place-items:center}
+.choice b{display:block;color:var(--navy);margin-bottom:3px;font-size:15px}
+.choice span{font-size:13px;color:var(--muted)}
+.choice.dis{opacity:.45;pointer-events:none}
+
+/* Blocks for variables */
+.vblock{border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px;background:#fbfcfd}
+.vblock-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:#e8eef7;color:var(--navy-2);letter-spacing:.3px}
+.tag.gold{background:var(--accent-soft);color:#7a5a14}
+.tag.green{background:var(--ok-soft);color:var(--ok)}
+.icon-btn{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:7px;padding:4px 9px;font-size:12.5px;cursor:pointer;color:var(--muted);transition:color .15s,border-color .15s}
+.icon-btn:hover{color:var(--err);border-color:#f0b8b2}
+.add-btn{margin-top:10px;border:1.5px dashed #b7c3d4;background:transparent;border-radius:9px;padding:8px 12px;cursor:pointer;color:var(--navy-2);font-weight:600;font-size:13px;width:100%;transition:background .15s,border-color .15s}
+.add-btn:hover{background:#f0f4fa;border-color:var(--navy-2)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;border-radius:9px;padding:9px 16px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid transparent;transition:background .15s,box-shadow .15s,transform .1s,border-color .15s}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--navy);color:#fff}
+.btn.pri:hover{background:var(--navy-2);box-shadow:0 4px 12px rgba(20,48,90,.22)}
+.btn.sec{background:#fff;color:var(--navy);border-color:#c9d2df}
+.btn.sec:hover{border-color:var(--navy-2);background:#f6f8fb}
+.btn.gold{background:var(--accent);color:#fff}
+.btn.gold:hover{background:#a37823;box-shadow:0 4px 12px rgba(184,137,43,.3)}
+.btn.sm{padding:6px 11px;font-size:13px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;flex-wrap:wrap}
+
+/* Alerts */
+.alert{border-radius:10px;padding:11px 14px;font-size:13.5px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
+.alert.warn{background:var(--warn-soft);color:#6b3d04;border:1px solid #f3d6ae}
+.alert.info{background:#eaf1fb;color:#1d3b63;border:1px solid #cbdaf0}
+.alert.err{background:#fdecea;color:#7a1a12;border:1px solid #f4c3bd}
+.alert ul{margin:4px 0 0;padding-left:18px}
+
+/* Title options */
+.topt{display:block;border:1.5px solid var(--line);border-radius:10px;padding:13px 15px 13px 44px;margin-bottom:10px;cursor:pointer;position:relative;background:#fff;transition:border-color .2s,background .2s}
+.topt::before{content:"";position:absolute;left:15px;top:15px;width:16px;height:16px;border-radius:50%;border:2px solid #b6c1d1;transition:border .2s}
+.topt.on{border-color:var(--navy);background:#f6f9fd}
+.topt.on::before{border:5px solid var(--navy)}
+.topt small{display:block;color:var(--muted);font-size:12px;margin-bottom:2px}
+.topt div{font-weight:600}
+.checks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chk{font-size:12px;padding:3px 9px;border-radius:20px;background:#f0f2f5;color:var(--muted)}
+.chk.ok{background:var(--ok-soft);color:var(--ok)}
+.chk.ok::before{content:"✓ "}
+
+/* Editable statements */
+.sec-t{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:16px 0 8px}
+.stm{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.stm .lbl{flex:none;min-width:44px;font-size:12px;font-weight:700;color:var(--navy-2);background:#eef3fa;border-radius:6px;padding:4px 6px;text-align:center;margin-top:6px}
+.ed{flex:1;border:1px solid transparent;border-radius:8px;padding:6px 9px;transition:border-color .15s,background .15s;outline:none;cursor:text}
+.ed:hover{border-color:var(--line);background:#fbfcfe}
+.ed:focus{border-color:var(--navy-2);background:#fff;box-shadow:0 0 0 3px rgba(29,68,121,.12)}
+.ed.mod{background:#fffaf0;border-color:#efd9a8}
+.rst{flex:none;border:0;background:none;color:var(--accent);cursor:pointer;font-size:12px;margin-top:7px;visibility:hidden}
+.stm.has-mod .rst{visibility:visible}
+.poh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:1000px){.poh-grid{grid-template-columns:1fr}}
+.poh-col h4{margin:0 0 4px;color:var(--navy);font-size:15px;display:flex;align-items:center;gap:8px}
+
+/* Paper preview (APA) */
+.paper{background:#fff;border:1px solid var(--line);border-radius:6px;padding:28px 30px;font-family:"Times New Roman",Times,serif;font-size:15px;color:#111;overflow-x:auto}
+.paper .tnum{font-weight:700;margin:0}
+.paper .ttitle{font-style:italic;margin:2px 0 10px}
+.paper .nota{margin-top:8px;font-size:14px}
+table.apa{border-collapse:collapse;width:100%;min-width:640px}
+table.apa th,table.apa td{padding:5px 7px;vertical-align:top;text-align:left;font-size:13.5px;line-height:1.35;border:0}
+table.apa thead th{border-top:1.5px solid #111;border-bottom:1px solid #111;font-weight:700;text-align:center}
+table.apa td.lb{border-bottom:1.5px solid #111}
+table.apa td.sep{border-top:1px solid #cfcfcf}
+.fig-box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;text-align:center}
+.fig-box svg{max-width:100%;height:auto}
+.fig-cap{font-family:"Times New Roman",serif;text-align:left;margin-bottom:8px}
+.fig-cap b{display:block}
+.fig-cap i{display:block}
+
+/* Method */
+.mth h4{margin:14px 0 4px;color:var(--navy);font-size:14.5px}
+.formula{font-family:"Cambria Math","Times New Roman",serif;font-size:17px;text-align:center;padding:10px;background:#f7f9fc;border-radius:8px;margin:8px 0}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.kpi div{background:#f3f6fa;border-radius:10px;padding:10px 14px;min-width:120px}
+.kpi b{display:block;font-size:22px;color:var(--navy)}
+.kpi span{font-size:12px;color:var(--muted)}
+
+/* Modal & toast */
+.modal-bg{position:fixed;inset:0;background:rgba(15,25,45,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal-bg.on{display:flex;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:14px;max-width:760px;width:100%;max-height:85vh;overflow:auto;padding:22px 24px;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:pop .25s cubic-bezier(.2,.7,.2,1)}
+@keyframes pop{from{opacity:0;transform:scale(.97) translateY(6px)}to{opacity:1;transform:none}}
+.modal h3{margin:0 0 6px;color:var(--navy)}
+.refs p{margin:0 0 10px;padding-left:28px;text-indent:-28px;font-size:14px}
+.refs .grp{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#14305a;color:#fff;padding:10px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+footer{max-width:1180px;margin:0 auto;padding:0 20px 30px;color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between}
+footer button{background:none;border:0;color:var(--navy-2);text-decoration:underline;cursor:pointer;padding:0;font-size:12.5px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{header.top,.stepper-wrap,.nav,footer,.btn-row{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="logos"><img src="data:image/png;base64,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" alt="Escudo de la UNASAM" width="46" height="36"><span class="lsep"></span><img src="data:image/jpeg;base64,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" alt="Facultad de Administración y Turismo" width="67" height="36"></div>
+      <div><h1>Tituladora-POH-TablasClaves</h1><p>Escuela Profesional de Administración · FAT – UNASAM</p></div>
+    </div>
+    <div class="top-actions">
+      <label class="sr" for="themeSel">Tema</label>
+      <select id="themeSel" class="hbtn" title="Tema de color"><option value="azul">Tema: Institucional</option><option value="esmeralda">Tema: Esmeralda</option><option value="vino">Tema: Vino</option><option value="oscuro">Tema: Oscuro</option></select>
+      <span class="save-state" id="saveState" title="La sesión se guarda automáticamente en este navegador"><i class="save-dot" id="saveDot"></i><span id="saveTxt">Sesión guardada</span></span>
+      <button class="hbtn" id="bNew" type="button">Nuevo</button>
+      <button class="hbtn" id="bOpen" type="button">Abrir sesión</button>
+      <button class="hbtn" id="bSave" type="button">Guardar sesión</button>
+      <input type="file" id="fileIn" accept=".json,application/json" class="sr">
+    </div>
+  </div>
+</header>
+<div class="stepper-wrap"><nav class="stepper" id="stepper" aria-label="Pasos"></nav><div class="progress"><i id="prog"></i></div></div>
+<main id="main"></main>
+<footer>
+  <span>Estructura basada en el Reglamento de Grados y Títulos UNASAM (2026), Anexo 2: proyecto de tesis cuantitativo.</span>
+  <span><button type="button" id="bRefs">Fuentes y referencias</button> · <button type="button" id="bHelp">Uso responsable</button></span>
+  <span class="credit">Desarrollado por <a href="https://github.com/abarcatrejonicolas" target="_blank" rel="noopener noreferrer">Nicolas Abarca Trejo</a></span>
+</footer>
+
+<div class="modal-bg" id="modal"><div class="modal" role="dialog" aria-modal="true"><div id="modalBody"></div><div class="btn-row" style="justify-content:flex-end;margin-top:14px"><button class="btn sec sm" type="button" id="modalClose">Cerrar</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   ESTADO Y SESIÓN
+   ============================================================ */
+const KEY = 'tituladora-poh-unasam-v1';
+const STEPS = ['Enfoque','Variables','Título','POH','Metodología','Modelo gráfico','Tablas APA'];
+
+function blankVar(n){ return {name:'',g:'auto',def:'',dims:Array.from({length:n},()=>({name:'',g:'auto',ind:''}))}; }
+function blankCons(){ return {name:'',g:'auto',def:'',ind:''}; }
+function defaults(){
+  return {
+    v:1, step:0,
+    autor:'hs2014', alcance:'', modelo:'estandar', tipo:'aplicada', tiempo:'proyecto',
+    v1:blankVar(3), v2:blankVar(2),
+    factores:[blankCons(),blankCons(),blankCons()], med:blankCons(), dep:blankCons(),
+    pob:'', org:'', lugar:'Huaraz', anio:String(new Date().getFullYear()),
+    tituloSel:0, titulo:'', tituloEdited:false,
+    N:'', conf:'95', e:'0.05', censal:false, likert:'5', itemsInd:'2',
+    showH0:false, ov:{}
+  };
+}
+let S = load() || defaults();
+
+function load(){
+  try{ const raw = localStorage.getItem(KEY); if(!raw) return null; return merge(defaults(), JSON.parse(raw)); }catch(e){ return null; }
+}
+function merge(base, obj){
+  if(!obj || typeof obj!=='object') return base;
+  for(const k of Object.keys(base)){ if(obj[k]!==undefined) base[k]=obj[k]; }
+  if(!Array.isArray(base.factores)||!base.factores.length) base.factores=[blankCons(),blankCons()];
+  return base;
+}
+let saveTimer=null;
+function save(){
+  document.getElementById('saveDot').classList.add('busy');
+  document.getElementById('saveTxt').textContent='Guardando…';
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    try{
+      localStorage.setItem(KEY, JSON.stringify(S));
+      const d=new Date();
+      document.getElementById('saveTxt').textContent='Guardado '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    }catch(e){ document.getElementById('saveTxt').textContent='No se pudo guardar en el navegador'; }
+    document.getElementById('saveDot').classList.remove('busy');
+  },350);
+}
+
+/* ============================================================
+   UTILIDADES DE TEXTO (gramática española)
+   ============================================================ */
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clean = s => String(s||'').replace(/\s+/g,' ').trim().replace(/[.;,:]+$/,'');
+const cap = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const unacc = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function lowerFirst(s){
+  s=clean(s); if(!s) return s;
+  const w=s.split(' ')[0];
+  if(w.length>1 && w===w.toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(w)) return s; // sigla (TIC, MYPE)
+  return s.charAt(0).toLowerCase()+s.slice(1);
+}
+const EXC = {clima:'m',sistema:'m',problema:'m',programa:'m',tema:'m',esquema:'m',idioma:'m',dia:'m',mapa:'m',planeta:'m',
+  imagen:'f',mano:'f',red:'f',sede:'f',base:'f',clase:'f',fuente:'f',gente:'f',mente:'f',parte:'f',suerte:'f',ley:'f',labor:'f',
+  mype:'f',pyme:'f',empresa:'f',estres:'m',analisis:'m',marketing:'m',branding:'m',engagement:'m',coaching:'m',e:'m',
+  crisis:'f',sintesis:'f',tesis:'f',actitud:'f',salud:'f',calidad:'f',tic:'fp',tics:'fp',mypes:'fp',pymes:'fp'};
+function genderSing(w){
+  if(EXC[w]) return EXC[w];
+  if(/(ion|dad|tad|tud|umbre|ie|sis)$/.test(w)) return 'f';
+  if(/a$/.test(w)) return 'f';
+  return 'm';
+}
+function guessG(name){
+  const w = unacc(clean(name).split(' ')[0]||'');
+  if(!w) return 'm';
+  if(EXC[w]) return EXC[w];
+  if(w.length>3 && /s$/.test(w) && !/(sis|is|us)$/.test(w)){
+    let base=w.slice(0,-1);
+    const b2=w.slice(0,-2);
+    if(/es$/.test(w) && /[dnrlzjy]$/.test(b2)) base=b2;
+    return genderSing(base)+'p';
+  }
+  return genderSing(w);
+}
+const ART={m:'el',f:'la',mp:'los',fp:'las'};
+function NP(x){
+  const g = (x.g && x.g!=='auto') ? x.g : guessG(x.name);
+  const name = lowerFirst(x.name);
+  return {g, name, art:ART[g], pl:g.endsWith('p'), raw:clean(x.name)};
+}
+const A  = x => { const n=NP(x); return n.art+' '+n.name; };          // el clima organizacional
+const Acap = x => cap(A(x));
+const DE = x => { const n=NP(x); return n.art==='el' ? 'del '+n.name : 'de '+n.art+' '+n.name; };
+const verb = (x, sg, pl) => NP(x).pl ? pl : sg;
+function dePhrase(s){ // "el hotel X" -> "del hotel X"
+  s=clean(s); if(!s) return '';
+  if(/^el\s/i.test(s)) return 'del '+s.slice(3);
+  return 'de '+s;
+}
+function joinY(arr){ if(arr.length<=1) return arr.join(''); return arr.slice(0,-1).join(', ')+' y '+arr[arr.length-1]; }
+function ctx(){
+  const parts=[];
+  if(clean(S.pob)) parts.push(dePhrase(S.pob));
+  if(clean(S.org)) parts.push(dePhrase(S.org));
+  let c=parts.join(' ');
+  if(clean(S.lugar)) c+=', '+clean(S.lugar);
+  if(clean(S.anio)) c+=', '+clean(S.anio);
+  return c;
+}
+const lines = s => String(s||'').split(/\n|;/).map(clean).filter(Boolean);
+const end = s => /[.?!]$/.test(s) ? s : s+'.';
+const pobArt = () => { const p=clean(S.pob); if(/^las\s/i.test(p)) return 'cada una de '+p; if(/^(los|la|el)\s/i.test(p)) return 'cada uno de '+p.replace(/^el\s/i,'el '); return 'cada integrante de '+p; };
+
+/* ============================================================
+   MODELO DE DATOS DERIVADO
+   ============================================================ */
+const isMed = () => S.alcance==='explicativo' && S.modelo==='mediador';
+const filled = x => clean(x.name).length>0;
+function dimsOf(v){ return v.dims.filter(filled); }
+
+/* Constructos para tablas y figuras */
+function constructs(){
+  if(isMed()){
+    const out = S.factores.filter(filled).map((f,i)=>({role:'Exógena',key:'F'+(i+1),x:f,ind:lines(f.ind)}));
+    out.push({role:'Mediadora (endógena)',key:'M',x:S.med,ind:lines(S.med.ind)});
+    out.push({role:'Endógena (dependiente)',key:'Y',x:S.dep,ind:lines(S.dep.ind)});
+    return out;
+  }
+  return null;
+}
+
+/* ============================================================
+   OVERRIDES (textos editados por el usuario)
+   ============================================================ */
+const BASES={};
+function T(key, base){
+  BASES[key]=base;
+  const o=S.ov[key];
+  if(o){ if(o.base===base) return o.text; delete S.ov[key]; }
+  return base;
+}
+
+/* ============================================================
+   TÍTULO
+   ============================================================ */
+function titleOptions(){
+  const c=ctx(); const o=[];
+  if(isMed()){
+    const m=NP(S.med), y=S.dep;
+    o.push({label:'Modelo con factores (como el artículo guía)', text:cap('factores de '+m.name+' que '+'influyen en '+A(y)+' '+c)});
+    o.push({label:'Variables principales', text:cap(m.name+' y '+NP(y).name+' '+c)});
+    o.push({label:'Explicativo directo', text:cap('factores que influyen en '+A(S.med)+' y en '+A(y)+' '+c)});
+  } else if(S.alcance==='explicativo'){
+    o.push({label:'Explicativo (influencia)', text:cap(NP(S.v1).name+' y su influencia en '+A(S.v2)+' '+c)});
+    o.push({label:'Explicativo (influencia de V1)', text:'Influencia '+DE(S.v1)+' en '+A(S.v2)+' '+c});
+    o.push({label:'Clásico FAT (V1 y V2)', text:cap(NP(S.v1).name+' y '+NP(S.v2).name+' '+c)});
+  } else {
+    o.push({label:'Clásico FAT (V1 y V2)', text:cap(NP(S.v1).name+' y '+NP(S.v2).name+' '+c)});
+    o.push({label:'Correlacional (relación)', text:'Relación entre '+A(S.v1)+' y '+A(S.v2)+' '+c});
+  }
+  return o;
+}
+function getTitle(){
+  if(S.tituloEdited && clean(S.titulo)) return clean(S.titulo);
+  const o=titleOptions(); return (o[S.tituloSel]||o[0]).text;
+}
+
+/* ============================================================
+   PROBLEMAS, OBJETIVOS, HIPÓTESIS
+   ============================================================ */
+function POH(){
+  const c=ctx(); const R={pe:[],oe:[],he:[],h0e:[]};
+  if(isMed()){
+    const F=S.factores.filter(filled), M=S.med, Y=S.dep;
+    R.pg=T('pg','¿Cuáles son los factores que influyen en '+A(M)+' y en '+A(Y)+' '+c+'?');
+    R.og=T('og','Determinar los factores que influyen en '+A(M)+' y en '+A(Y)+' '+c+'.');
+    R.hg=T('hg',cap(joinY(F.map(A)))+' influyen en '+A(M)+' y, a su vez, '+A(M)+' '+verb(M,'influye','influyen')+' en '+A(Y)+' '+c+'.');
+    R.h0g=T('h0g',cap(joinY(F.map(A)))+' no influyen en '+A(M)+' ni '+A(M)+' '+verb(M,'influye','influyen')+' en '+A(Y)+' '+c+'.');
+    const pairs=F.map(f=>[f,M]).concat([[M,Y]]);
+    pairs.forEach(([a,b],i)=>{
+      R.pe.push(T('pe'+i,'¿De qué manera '+verb(a,'influye','influyen')+' '+A(a)+' en '+A(b)+' '+c+'?'));
+      R.oe.push(T('oe'+i,'Establecer la influencia '+DE(a)+' en '+A(b)+' '+c+'.'));
+      R.he.push(T('he'+i,Acap(a)+' '+verb(a,'influye','influyen')+' de manera positiva y significativa en '+A(b)+' '+c+'.'));
+      R.h0e.push(T('h0e'+i,Acap(a)+' no '+verb(a,'influye','influyen')+' significativamente en '+A(b)+' '+c+'.'));
+    });
+  } else if(S.alcance==='explicativo'){
+    const V1=S.v1, V2=S.v2, D=dimsOf(V1);
+    R.pg=T('pg','¿De qué manera '+verb(V1,'influye','influyen')+' '+A(V1)+' en '+A(V2)+' '+c+'?');
+    R.og=T('og','Determinar la influencia '+DE(V1)+' en '+A(V2)+' '+c+'.');
+    R.hg=T('hg',Acap(V1)+' '+verb(V1,'influye','influyen')+' de manera positiva y significativa en '+A(V2)+' '+c+'.');
+    R.h0g=T('h0g',Acap(V1)+' no '+verb(V1,'influye','influyen')+' significativamente en '+A(V2)+' '+c+'.');
+    D.forEach((d,i)=>{
+      R.pe.push(T('pe'+i,'¿De qué manera '+verb(d,'influye','influyen')+' '+A(d)+' en '+A(V2)+' '+c+'?'));
+      R.oe.push(T('oe'+i,'Establecer la influencia '+DE(d)+' en '+A(V2)+' '+c+'.'));
+      R.he.push(T('he'+i,Acap(d)+' '+verb(d,'influye','influyen')+' de manera positiva y significativa en '+A(V2)+' '+c+'.'));
+      R.h0e.push(T('h0e'+i,Acap(d)+' no '+verb(d,'influye','influyen')+' significativamente en '+A(V2)+' '+c+'.'));
+    });
+  } else {
+    const V1=S.v1, V2=S.v2, D=dimsOf(V1);
+    R.pg=T('pg','¿Qué relación existe entre '+A(V1)+' y '+A(V2)+' '+c+'?');
+    R.og=T('og','Determinar la relación que existe entre '+A(V1)+' y '+A(V2)+' '+c+'.');
+    R.hg=T('hg',Acap(V1)+' '+verb(V1,'se relaciona','se relacionan')+' significativamente con '+A(V2)+' '+c+'.');
+    R.h0g=T('h0g',Acap(V1)+' no '+verb(V1,'se relaciona','se relacionan')+' significativamente con '+A(V2)+' '+c+'.');
+    D.forEach((d,i)=>{
+      R.pe.push(T('pe'+i,'¿Qué relación existe entre '+A(d)+' y '+A(V2)+' '+c+'?'));
+      R.oe.push(T('oe'+i,'Establecer la relación que existe entre '+A(d)+' y '+A(V2)+' '+c+'.'));
+      R.he.push(T('he'+i,Acap(d)+' '+verb(d,'se relaciona','se relacionan')+' significativamente con '+A(V2)+' '+c+'.'));
+      R.h0e.push(T('h0e'+i,Acap(d)+' no '+verb(d,'se relaciona','se relacionan')+' significativamente con '+A(V2)+' '+c+'.'));
+    });
+  }
+  return R;
+}
+
+/* ============================================================
+   METODOLOGÍA
+   ============================================================ */
+const Z = {'90':1.645,'95':1.96,'99':2.576};
+function sample(){
+  const N=parseInt(S.N,10); if(!(N>0)) return null;
+  if(S.censal) return {N,n:N,censal:true};
+  const z=Z[S.conf]||1.96, e=parseFloat(S.e)||0.05, p=0.5, q=0.5;
+  const raw=(N*z*z*p*q)/((N-1)*e*e+z*z*p*q);
+  return {N,n:Math.ceil(raw),raw,z,e,p,q,censal:false};
+}
+function totalItems(){
+  const k=parseInt(S.itemsInd,10)||1;
+  let n=0;
+  if(isMed()) constructs().forEach(c=>n+=c.ind.length*k);
+  else [S.v1,S.v2].forEach(v=>dimsOf(v).forEach(d=>n+=lines(d.ind).length*k));
+  return n;
+}
+function likertText(){
+  return S.likert==='7'
+    ? 'escala tipo Likert de siete puntos (1 = Totalmente en desacuerdo a 7 = Totalmente de acuerdo)'
+    : 'escala tipo Likert de cinco puntos (1 = Totalmente en desacuerdo, 2 = En desacuerdo, 3 = Ni de acuerdo ni en desacuerdo, 4 = De acuerdo, 5 = Totalmente de acuerdo)';
+}
+function pls10(){ // regla de las 10 veces
+  const k = isMed() ? S.factores.filter(filled).length : dimsOf(S.v1).length;
+  return 10*Math.max(k,1);
+}
+/* ---------- Autores de referencia metodológica (páginas verificadas) ---------- */
+const VARA_URL='https://www.administracion.usmp.edu.pe/investigacion/files/7-PASOS-PARA-UNA-TESIS-EXITOSA-Desde-la-idea-inicial-hasta-la-sustentaci%C3%B3n.pdf';
+const HS_URL='https://highered.mheducation.com/sites/1456223968/information_center_view0/index.html';
+const AUT={
+  hs2014:{label:'Roberto Hernández Sampieri — con Fernández Collado y Baptista Lucio (2014)', short:'Hernández Sampieri et al., 2014',
+    ref:'Hernández Sampieri, R., Fernández Collado, C. y Baptista Lucio, M. del P. (2014). <i>Metodología de la investigación</i> (6.ª ed.). McGraw-Hill Education.',
+    url:HS_URL, link:null,
+    note:'Obra comercial (6.ª edición impresa). El enlace abre la página oficial de la editorial McGraw-Hill; las páginas citadas corresponden a la edición impresa (consúltala en la biblioteca).'},
+  vara2012:{label:'Arístides Vara Horna (2012)', short:'Vara-Horna, 2012',
+    ref:'Vara-Horna, A. A. (2012). <i>Desde la idea hasta la sustentación: Siete pasos para una tesis exitosa. Un método efectivo para las ciencias empresariales</i>. Instituto de Investigación de la Facultad de Ciencias Administrativas y Recursos Humanos, Universidad de San Martín de Porres.',
+    url:VARA_URL, link:p=>VARA_URL+'#page='+p,
+    note:'Manual de libre acceso publicado por la Universidad de San Martín de Porres. Cada página citada abre el PDF oficial en esa página exacta.'},
+  bernal2010:{label:'César Augusto Bernal Torres (2010)', short:'Bernal, 2010',
+    ref:'Bernal, C. A. (2010). <i>Metodología de la investigación: Administración, economía, humanidades y ciencias sociales</i> (3.ª ed.). Pearson Educación.',
+    url:'https://app.box.com/s/f6p2frnm6recmla3z6xvp5oxjtx4rc39/file/2198986993567', link:null,
+    note:'Disponible en la carpeta de Metodología de la investigación compartida por el docente (Box). Las páginas citadas corresponden a la numeración impresa del libro.'},
+  vill2020:{label:'Luis Augusto Villanueva Benites (2020)', short:'Villanueva, 2020',
+    ref:'Villanueva Benites, L. A. (2020). <i>Diseño del proyecto e informe de investigación: Una aplicación a las ciencias empresariales</i>. Facultad de Administración y Turismo, Universidad Nacional Santiago Antúnez de Mayolo.',
+    url:'https://app.box.com/s/f6p2frnm6recmla3z6xvp5oxjtx4rc39/file/2198986281271', link:null,
+    note:'Disponible en la carpeta de Metodología de la investigación compartida por el docente (Box). Las páginas citadas corresponden a la numeración del documento.'}
+};
+const AU = () => AUT[S.autor]||AUT.hs2014;
+const ci = p => '('+AU().short+(p?', p. '+p:'')+')';
+const isVara = () => S.autor==='vara2012';
+/* Páginas que sustentan cada apartado, según autor y alcance */
+function srcPages(k){
+  const corr=S.alcance==='correlacional';
+  if(S.autor==='bernal2010') return ({nivel:corr?[114]:[115],diseno:[118],mue:[164],tec:[250],val:[247,255]})[k]||[];
+  if(S.autor==='vill2020') return ({tipo:[61],nivel:corr?[62]:[63],diseno:[66,67],mue:[81],tec:[127],val:corr?[149,153]:[149],ana:corr?[161,174]:[161]})[k]||[];
+  const map = isVara()
+    ? {enfoque:[203],tipo:[202],nivel:corr?[210]:[210,211],diseno:corr?[210]:[203,352],pob:[],mue:[227],tec:[203],val:[297,303],ana:corr?[351]:[352]}
+    : {enfoque:[],tipo:[],nivel:corr?[93]:[95],diseno:[152,154,157],pob:[],mue:[],tec:[217,238],val:corr?[200,201,204,208]:[200],ana:[]};
+  return map[k]||[];
+}
+function method(){
+  const P = S.tiempo==='proyecto';
+  const t = (f,p)=>P?f:p;
+  const smp=sample(); const corr=S.alcance==='correlacional';
+  const vars = isMed() ? joinY(constructs().map(c=>A(c.x))) : A(S.v1)+' y '+A(S.v2);
+  const infl = isMed()?'la influencia de los factores sobre '+A(S.med)+' y de esta sobre '+A(S.dep):'la influencia '+DE(S.v1)+' en '+A(S.v2);
+  const unid = clean(S.pob)?clean(S.pob).replace(/^(los|las|el|la)\s/i,''):'unidades';
+  const zs = String(Z[S.conf]||1.96).replace('.',','), es = String(parseFloat(S.e)||0.05).replace('.',',');
+  const pls = 'La confiabilidad del modelo de medida '+t('se evaluará','se evaluó')+' mediante las cargas factoriales (λ ≥ 0,70), el alfa de Cronbach, el rho_A y la fiabilidad compuesta (≥ 0,70); la validez convergente, mediante la varianza extraída media (AVE ≥ 0,50), y la validez discriminante, mediante el criterio de Fornell y Larcker (1981) y la ratio HTMT (Henseler et al., 2015; Hair et al., 2019).';
+  const plsAna = 'La significancia de los coeficientes path '+t('se determinará','se determinó')+' mediante bootstrapping con 5000 submuestras y '+t('se aceptarán','se aceptaron')+' las hipótesis cuando t > 1,96 y p < 0,05; asimismo, '+t('se reportarán','se reportaron')+' el coeficiente de determinación (R²), el tamaño del efecto (f²) y la relevancia predictiva (Q²) (Hair et al., 2019).';
+  const muestraTxt = (extra) => (smp && smp.censal)
+    ? 'Debido a que la población es pequeña y accesible, '+t('se trabajará','se trabajó')+' con una muestra censal, es decir, con la totalidad de la población ('+smp.N+' '+unid+').'
+    : 'Para determinar el tamaño de la muestra '+t('se utilizará','se utilizó')+' la fórmula para poblaciones finitas, con un nivel de confianza del '+S.conf+' % (Z = '+zs+'), proporciones p = q = 0,5 y un error máximo admisible de '+es+extra+'; de ello resulta una muestra de '+(smp?smp.n:'[n]')+' '+unid+', seleccionados mediante muestreo probabilístico aleatorio simple.';
+  const M={};
+  M.pob=T('m_pob','La población '+t('estará','estuvo')+' conformada por '+(smp?smp.N:'[N]')+' '+unid+' '+dePhrase(S.org||'[organización]')+', '+clean(S.lugar)+', '+clean(S.anio)+'. La unidad de análisis '+t('será','fue')+' '+pobArt()+'.');
+  if(isVara()){
+    M.enfoque=T('m_enfoque','La investigación '+t('tendrá','tuvo')+' un enfoque cuantitativo, pues '+t('empleará','empleó')+' instrumentos estandarizados, como el cuestionario, y análisis estadístico de los datos '+ci(203)+'.');
+    M.tipo=T('m_tipo', S.tipo==='aplicada'
+      ? 'Por su finalidad, la investigación '+t('será','fue')+' aplicada, ya que la investigación empresarial casi siempre es aplicada, porque busca solucionar un problema concreto y práctico de la realidad de las empresas '+ci(202)+'.'
+      : 'Por su finalidad, la investigación '+t('será','fue')+' básica, orientada a generar conocimiento al investigar la relación entre variables o constructos '+ci(202)+'.');
+    M.nivel=T('m_nivel', corr
+      ? 'El nivel de investigación '+t('será','fue')+' descriptivo correlacional, cuyo propósito es determinar el grado de asociación entre variables empresariales, en este caso entre '+vars+'; este diseño no permite afirmar relaciones de causa-efecto, aunque sí sospecharlas '+ci(210)+'.'
+      : 'El nivel de investigación '+t('será','fue')+' explicativo, porque '+t('buscará','buscó')+' determinar las causas de los fenómenos empresariales y explicar por qué ocurren '+ci(210)+'; por ello, '+t('se contrastarán','se contrastaron')+' hipótesis causales que expresan '+infl+', formuladas con términos como “influir” '+ci(211)+'.');
+    M.diseno=T('m_diseno', corr
+      ? 'El diseño '+t('será','fue')+' descriptivo correlacional de corte transversal, combinación de diseños válida siempre que no existan contradicciones entre ellos '+ci(210)+'. No '+t('se manipularán','se manipularon')+' las variables y los datos '+t('se recolectarán','se recolectaron')+' en un solo momento. El esquema del diseño se presenta en la Figura 1.'
+      : 'Dado que no '+t('se manipularán','se manipularon')+' las variables y los datos '+t('se recolectarán','se recolectaron')+' en un solo momento, el diseño '+t('será','fue')+' explicativo no experimental de corte transversal, basado en un modelo explicativo '+ci(203)+'. La causalidad entre las variables '+t('se analizará','se analizó')+' mediante ecuaciones estructurales, técnica multivariada que el autor incluye entre las principales para medir la causalidad entre variables '+ci(352)+'. El modelo se presenta en la Figura 1.');
+    M.mue=T('m_mue', muestraTxt(' '+ci(227)));
+    M.tec=T('m_tec','La técnica '+t('será','fue')+' la encuesta y el instrumento, el cuestionario estructurado, instrumento estandarizado propio de los diseños cuantitativos '+ci(203)+'. El cuestionario '+t('contendrá','contuvo')+' '+totalItems()+' ítems, elaborados a partir de los indicadores de la Tabla 1, con una '+likertText()+'.');
+    M.val=T('m_val','La validez de contenido '+t('se determinará','se determinó')+' mediante el criterio de jueces, con la participación de al menos tres jueces especialistas en el tema '+ci(303)+'. La fiabilidad '+t('se evaluará','se evaluó')+' con el coeficiente alfa de Cronbach, que mide la consistencia interna de las escalas tipo Likert; se considera buena consistencia interna un valor superior a 0,70 '+ci(297)+'.'+(corr?'':' '+pls));
+    M.ana=T('m_ana', corr
+      ? 'Los datos '+t('serán procesados','fueron procesados')+' en Microsoft Excel y SPSS. Para la prueba de hipótesis '+t('se usará','se usó')+' el coeficiente r de Spearman, indicado cuando ambas variables son ordinales o de intervalo sin distribución normal; si ambas fueran de intervalo con distribución normal, '+t('correspondería','correspondió')+' la r de Pearson '+ci(351)+'. '+t('Se trabajará','Se trabajó')+' con un nivel de significancia de 0,05 (p < 0,05).'
+      : 'Los datos '+t('serán procesados','fueron procesados')+' con el software SmartPLS 4 mediante el análisis de ecuaciones estructurales, técnica multivariada de alto nivel de complejidad para medir la causalidad entre variables '+ci(352)+', en su variante de mínimos cuadrados parciales (PLS-SEM). '+plsAna);
+  } else if(S.autor==='bernal2010' || S.autor==='vill2020'){
+    const B = S.autor==='bernal2010';
+    const tipoA='Por su finalidad, la investigación '+t('será','fue')+' aplicada'+(B?', porque '+t('utilizará','utilizó')+' conocimientos teóricos para proponer soluciones a problemas prácticos de la gestión '+dePhrase(S.org||'la organización')+'.':', es decir, referida a problemas específicos a los que se busca dar una solución práctica aplicando teorías o conocimientos científicos '+ci(61)+'.');
+    const tipoB='Por su finalidad, la investigación '+t('será','fue')+' básica, porque '+t('buscará','buscó')+' ampliar el conocimiento teórico sobre '+vars+', sin un propósito de aplicación inmediata'+(B?'.':' '+ci(61)+'.');
+    M.enfoque=T('m_enfoque','La investigación '+t('tendrá','tuvo')+' un enfoque cuantitativo, porque '+t('se medirán','se midieron')+' las variables y '+t('se analizarán','se analizaron')+' los datos con estadística para contrastar las hipótesis '+ci()+'.');
+    M.tipo=T('m_tipo', S.tipo==='aplicada'?tipoA:tipoB);
+    M.nivel=T('m_nivel', corr
+      ? (B ? 'La investigación '+t('será','fue')+' correlacional, ya que '+t('tendrá','tuvo')+' como propósito mostrar o examinar la relación entre '+vars+' '+ci(114)+'.'
+           : 'El nivel de investigación '+t('será','fue')+' correlacional (o relacional), cuya finalidad es medir el nivel de relación o asociación no causal que existe entre '+vars+' '+ci(62)+'.')
+      : (B ? 'La investigación '+t('será','fue')+' explicativa o causal, la cual tiene como fundamento la prueba de hipótesis y busca explicar el porqué de los fenómenos '+ci(115)+'; en este caso, '+infl+'.'
+           : 'El nivel de investigación '+t('será','fue')+' explicativo, ya que los estudios explicativos se ocupan de determinar las causas de los fenómenos mediante la prueba de hipótesis '+ci(63)+'; en este caso, '+infl+'.'));
+    M.diseno=T('m_diseno', B
+      ? 'El diseño '+t('será','fue')+' no experimental, porque no '+t('se manipularán','se manipularon')+' deliberadamente las variables, y de corte transversal (seccional), porque la información del objeto de estudio se '+t('obtendrá','obtuvo')+' una única vez en un momento dado '+ci(118)+'. '+(corr?'El esquema del diseño se presenta en la Figura 1.':'Las relaciones causales '+t('se representarán','se representaron')+' mediante un modelo de ecuaciones estructurales (PLS-SEM), como se muestra en la Figura 1.')
+      : 'El diseño '+t('será','fue')+' no experimental, porque se '+t('realizará','realizó')+' sin manipular deliberadamente las variables, observando los fenómenos tal como se dan en su contexto natural '+ci(66)+', y transeccional correlacional-causal, porque '+t('describirá','describió')+' las relaciones entre dos o más variables en un momento determinado, '+(corr?'en términos correlacionales':'en términos causales')+' '+ci(67)+'. '+(corr?'El esquema del diseño se presenta en la Figura 1.':'Las relaciones causales '+t('se representarán','se representaron')+' mediante un modelo de ecuaciones estructurales (PLS-SEM), como se muestra en la Figura 1.'));
+    M.mue=T('m_mue', muestraTxt(' '+ci(B?164:81)));
+    M.tec=T('m_tec', B
+      ? 'La técnica '+t('será','fue')+' la encuesta y el instrumento, el cuestionario, entendido como un conjunto de preguntas diseñadas para generar los datos necesarios para alcanzar los objetivos del estudio '+ci(250)+'. El cuestionario '+t('contendrá','contuvo')+' '+totalItems()+' ítems, elaborados a partir de los indicadores de la Tabla 1, con una '+likertText()+'.'
+      : 'La técnica '+t('será','fue')+' la encuesta y el instrumento, el cuestionario, estructurado mediante un conjunto sistemático de preguntas escritas en un formulario '+ci(127)+'. El cuestionario '+t('contendrá','contuvo')+' '+totalItems()+' ítems, elaborados a partir de los indicadores de la Tabla 1, con una '+likertText()+'.');
+    M.val=T('m_val', (B
+      ? 'La confiabilidad, entendida como la consistencia de las puntuaciones obtenidas por las mismas personas cuando se les aplica el mismo cuestionario en distintas ocasiones '+ci(247)+', '+t('se determinará','se determinó')+' con el coeficiente alfa de Cronbach en una prueba piloto; la validez '+t('se verificará','se verificó')+' sometiendo el cuestionario al juicio de expertos en elaboración de instrumentos y en el tema de estudio '+ci(255)+'.'
+      : 'La validez de contenido '+t('se determinará','se determinó')+' mediante el juicio de expertos, el procedimiento más empleado para ello '+ci(149)+'.'+(corr?' La confiabilidad '+t('se estimará','se estimó')+' con el coeficiente alfa de Cronbach, que mide la consistencia interna de instrumentos cuyos ítems no son dicotómicos '+ci(153)+'.':''))+(corr?'':' '+pls));
+    M.ana=T('m_ana', corr
+      ? 'Los datos '+t('serán procesados','fueron procesados')+' en Microsoft Excel y SPSS. Para la prueba de hipótesis '+t('se aplicará','se aplicó')+' la estadística inferencial'+(B?'':' '+ci(161))+' mediante el coeficiente de correlación rho de Spearman'+(B?' '+ci():', que mide el grado de correlación entre dos variables cualitativas, al menos una de ellas ordinal '+ci(174))+', con un nivel de significancia de 0,05 (p < 0,05).'
+      : 'Los datos '+t('serán procesados','fueron procesados')+' con estadística inferencial'+(B?'':' '+ci(161))+' en el software SmartPLS 4, mediante el modelado de ecuaciones estructurales por mínimos cuadrados parciales (PLS-SEM) (Hair et al., 2019). '+plsAna);
+  } else {
+    M.enfoque=T('m_enfoque','La investigación '+t('tendrá','tuvo')+' un enfoque cuantitativo, porque '+t('se medirán','se midieron')+' las variables y '+t('se analizarán','se analizaron')+' los datos mediante métodos estadísticos con el fin de probar las hipótesis planteadas '+ci()+'.');
+    M.tipo=T('m_tipo', S.tipo==='aplicada'
+      ? 'Por su finalidad, la investigación '+t('será','fue')+' de tipo aplicada, porque '+t('utilizará','utilizó')+' conocimientos basados en teorías existentes para comprender y proponer soluciones a problemas prácticos de la gestión '+dePhrase(S.org||'la organización')+'.'
+      : 'Por su finalidad, la investigación '+t('será','fue')+' de tipo básica, porque '+t('buscará','buscó')+' ampliar el conocimiento teórico sobre '+vars+', sin un propósito de aplicación inmediata.');
+    M.nivel=T('m_nivel', corr
+      ? 'El alcance de la investigación '+t('será','fue')+' correlacional, ya que '+t('tendrá','tuvo')+' como finalidad conocer la relación o grado de asociación que existe entre '+vars+' en un contexto en particular '+ci(93)+'.'
+      : 'El alcance de la investigación '+t('será','fue')+' explicativo, ya que '+t('pretende','pretendió')+' establecer las causas de los fenómenos que se estudian '+ci(95)+'; en este caso, '+infl+'.');
+    M.diseno=T('m_diseno','El diseño '+t('será','fue')+' no experimental, porque la investigación '+t('se realizará','se realizó')+' sin manipular deliberadamente las variables '+ci(152)+'; transeccional o transversal, porque los datos '+t('se recolectarán','se recolectaron')+' en un momento único '+ci(154)+', y correlacional-causal, porque '+t('describirá','describió')+' relaciones entre dos o más variables en un momento determinado '+(corr?'en términos correlacionales':'en función de la relación causa-efecto')+' '+ci(157)+'. '+(corr?'El esquema del diseño se presenta en la Figura 1.':'Las relaciones causales '+t('se representarán','se representaron')+' mediante un modelo de ecuaciones estructurales por mínimos cuadrados parciales (PLS-SEM), como se muestra en la Figura 1.'));
+    M.mue=T('m_mue', muestraTxt(''));
+    M.tec=T('m_tec','La técnica '+t('será','fue')+' la encuesta y el instrumento, el cuestionario, que consiste en “un conjunto de preguntas respecto de una o más variables a medir” '+ci(217)+'. El cuestionario '+t('contendrá','contuvo')+' '+totalItems()+' ítems, elaborados a partir de los indicadores de la Tabla 1, con escalamiento tipo Likert, es decir, un conjunto de ítems presentados en forma de afirmaciones ante los cuales se pide la reacción de los participantes '+ci(238)+'. Se '+t('usará','usó')+' una '+likertText()+'.');
+    M.val=T('m_val', corr
+      ? 'La confiabilidad, entendida como el grado en que la aplicación repetida del instrumento a los mismos sujetos produce resultados iguales '+ci(200)+', '+t('se determinará','se determinó')+' mediante el coeficiente alfa de Cronbach '+ci(208)+' aplicado a una prueba piloto. La validez de contenido, es decir, el grado en que el instrumento refleja el dominio específico de lo que se mide '+ci(201)+', '+t('se verificará','se verificó')+' mediante la validez de expertos '+ci(204)+'.'
+      : 'La confiabilidad, entendida como el grado en que la aplicación repetida del instrumento a los mismos sujetos produce resultados iguales '+ci(200)+', y la validez del instrumento '+t('se evaluarán','se evaluaron')+' con los criterios del modelo de medida PLS-SEM. '+pls);
+    M.ana=T('m_ana', corr
+      ? 'Los datos '+t('serán procesados','fueron procesados')+' en Microsoft Excel y SPSS. Para la estadística descriptiva '+t('se elaborarán','se elaboraron')+' tablas de frecuencias y porcentajes. Para la estadística inferencial '+t('se aplicará','se aplicó')+' la prueba de normalidad de '+(smp && smp.n<=50?'Shapiro-Wilk (n ≤ 50)':'Kolmogórov-Smirnov (n > 50)')+' y, dado que las variables se miden en escala ordinal, el coeficiente rho de Spearman, con un nivel de significancia de 0,05 (p < 0,05) '+ci()+'.'
+      : 'Los datos '+t('serán procesados','fueron procesados')+' con el software SmartPLS 4 mediante el modelado de ecuaciones estructurales por mínimos cuadrados parciales (PLS-SEM), que comprende la evaluación del modelo de medida y del modelo estructural (Hair et al., 2019). '+plsAna);
+  }
+  return M;
+}
+const METH_ORDER=[['3.1. Enfoque de investigación','enfoque'],['3.2. Tipo','tipo'],['3.3. Nivel de investigación','nivel'],['3.4. Diseño de investigación','diseno'],['3.5.1. Población','pob'],['3.5.2. Muestra','mue'],['3.6. Técnicas e instrumentos de recolección de datos','tec'],['3.7. Validez y confiabilidad de los instrumentos','val'],['3.8. Técnicas de procesamiento y análisis de datos','ana']];
+
+/* ============================================================
+   TABLAS APA (modelo -> HTML para vista y para Word)
+   ============================================================ */
+function codeOf(name, used){
+  const words=clean(name).split(' ').filter(w=>w.length>2||/^[A-Z]/.test(w));
+  let c=(words.length>1?words.slice(0,3).map(w=>w[0]).join(''):clean(name).slice(0,3)).toUpperCase();
+  c=unacc(c).toUpperCase()||'X';
+  let k=c, i=2; while(used.has(k)){ k=c+i; i++; } used.add(k); return k;
+}
+function scaleCell(){
+  return 'Ordinal<br>(Likert de 1 a '+S.likert+')';
+}
+function scaleNote(){
+  return S.likert==='7' ? ' Escala: 1 = Totalmente en desacuerdo a 7 = Totalmente de acuerdo.'
+    : ' Escala: 1 = Totalmente en desacuerdo, 2 = En desacuerdo, 3 = Ni de acuerdo ni en desacuerdo, 4 = De acuerdo, 5 = Totalmente de acuerdo.';
+}
+const PH = s => '<span style="color:#9a6b00">['+s+']</span>';
+function defCell(x){ return clean(x.def) ? esc(end(clean(x.def))) : PH('Completar definición conceptual con cita APA del autor'); }
+
+function opTable(){
+  const k=parseInt(S.itemsInd,10)||1; let item=1;
+  const rng = n => { const a=item, b=item+n-1; item+=n; return n<=0?'—':(a===b?String(a):a+'–'+b); };
+  if(isMed()){
+    const head=['Constructo','Tipo de variable','Definición conceptual','Indicadores','Ítems','Escala de medición'];
+    const rows=[]; let indN=1;
+    const cs=constructs();
+    cs.forEach((c,ci)=>{
+      const ind=c.ind.map(s=>(indN++)+'. '+esc(s)).join('<br>');
+      const cells=[{h:'<b>'+esc(cap(NP(c.x).name))+'</b>'},{h:c.role},{h:defCell(c.x)},{h:ind||PH('Indicadores')},{h:rng(c.ind.length*k)}];
+      if(ci===0) cells.push({h:scaleCell(),rs:cs.length});
+      rows.push({cells,sep:ci>0});
+    });
+    return {head,rows,title:'Operacionalización de las variables'};
+  }
+  const head=['Variable','Definición conceptual','Definición operacional','Dimensiones','Indicadores','Ítems','Escala de medición'];
+  const rows=[];
+  [[S.v1,'Variable 1'],[S.v2,'Variable 2']].forEach(([v,lab],vi)=>{
+    const D=dimsOf(v); if(!D.length) return;
+    const op='La variable '+esc(NP(v).name)+' se medirá a través de sus dimensiones '+esc(joinY(D.map(d=>NP(d).name)))+', mediante un cuestionario con escala tipo Likert de '+(S.likert==='7'?'siete':'cinco')+' puntos.';
+    D.forEach((d,di)=>{
+      const ind=lines(d.ind);
+      const cells=[];
+      if(di===0){
+        cells.push({h:'<b>'+lab+':</b><br>'+esc(cap(NP(v).name)),rs:D.length});
+        cells.push({h:defCell(v),rs:D.length});
+        cells.push({h:op,rs:D.length});
+      }
+      cells.push({h:esc(cap(NP(d).name))});
+      cells.push({h:ind.length?ind.map(s=>'– '+esc(s)).join('<br>'):PH('Indicadores')});
+      cells.push({h:rng(ind.length*k)});
+      if(di===0) cells.push({h:scaleCell(),rs:D.length});
+      rows.push({cells,sep:vi>0&&di===0});
+    });
+  });
+  return {head,rows,title:'Operacionalización de las variables'};
+}
+
+function consTable(){
+  const R=POH(); const smp=sample(); const corr=S.alcance==='correlacional';
+  const list = (arr) => arr.map((s,i)=>(i+1)+'. '+esc(s)).join('<br><br>');
+  const head=['Problemas','Objetivos','Hipótesis','Variables y dimensiones','Indicadores','Metodología'];
+  let vcell='', icell='';
+  if(isMed()){
+    constructs().forEach(c=>{ vcell+='<b>'+esc(c.role)+':</b><br>'+esc(cap(NP(c.x).name))+'<br><br>'; icell+='<b>'+esc(cap(NP(c.x).name))+':</b><br>'+c.ind.map(s=>'– '+esc(s)).join('<br>')+'<br><br>'; });
+  } else {
+    [[S.v1,'Variable 1'],[S.v2,'Variable 2']].forEach(([v,lab])=>{
+      vcell+='<b>'+lab+':</b> '+esc(cap(NP(v).name))+'<br>Dimensiones:<br>'+dimsOf(v).map(d=>'– '+esc(cap(NP(d).name))).join('<br>')+'<br><br>';
+      dimsOf(v).forEach(d=>{ icell+='<b>'+esc(cap(NP(d).name))+':</b><br>'+lines(d.ind).map(s=>'– '+esc(s)).join('<br>')+'<br>'; });
+      icell+='<br>';
+    });
+  }
+  const met='<b>Enfoque:</b> cuantitativo<br><b>Tipo:</b> '+(S.tipo==='aplicada'?'aplicada':'básica')+'<br><b>Nivel:</b> '+(corr?'correlacional':'explicativo')+
+    '<br><b>Diseño:</b> '+(isVara()?(corr?'descriptivo correlacional, de corte transversal<br>M: Ox – r – Oy':'explicativo no experimental, de corte transversal (PLS-SEM)'):(corr?'no experimental, transeccional correlacional<br>M: Ox – r – Oy':'no experimental, transeccional correlacional-causal (PLS-SEM)'))+
+    '<br><b>Población:</b> '+(smp?smp.N:'[N]')+'<br><b>Muestra:</b> '+(smp?smp.n+(smp.censal?' (censal)':''):'[n]')+
+    '<br><b>Técnica:</b> encuesta<br><b>Instrumento:</b> cuestionario (Likert de '+S.likert+' puntos)'+
+    '<br><b>Análisis:</b> '+(corr?'SPSS; Rho de Spearman (p < 0,05)':'SmartPLS 4; PLS-SEM, bootstrapping (5000)')+
+    '<br><b>Sustento metodológico:</b> '+esc(AU().short.replace(/, (\d{4})$/,' ($1)'));
+  const rows=[
+    {cells:[{h:'<b>Problema general</b><br>'+esc(R.pg)},{h:'<b>Objetivo general</b><br>'+esc(R.og)},{h:'<b>Hipótesis general</b><br>'+esc(R.hg)},{h:vcell,rs:2},{h:icell,rs:2},{h:met,rs:2}]},
+    {cells:[{h:'<b>Problemas específicos</b><br>'+list(R.pe)},{h:'<b>Objetivos específicos</b><br>'+list(R.oe)},{h:'<b>Hipótesis específicas</b><br>'+list(R.he)}],sep:true}
+  ];
+  return {head,rows,title:'Matriz de consistencia',landscape:true};
+}
+
+/* Render tabla APA; word=true añade estilos en línea para Word */
+function apaTable(model, word){
+  const B='solid windowtext 1.0pt';
+  const nrows=model.rows.length;
+  // calcular qué celdas tocan la última fila
+  const occ=[]; // [rowIndex] -> filled columns
+  let html='<table class="apa" '+(word?'border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%"':'')+'><thead><tr>';
+  const W = model.landscape ? [17,17,17,15,17,17] : (model.head.length===7 ? [12,19,21,13,22,6,7] : [15,13,28,26,8,10]);
+  model.head.forEach((h,i)=>{ html+='<th width="'+W[i]+'%"'+(word?' style="width:'+W[i]+'%;border-top:'+B+';border-bottom:'+B+';padding:3pt 4pt;font-family:\'Times New Roman\';font-size:'+(model.landscape?'9':'10')+'pt;text-align:center"':' style="width:'+W[i]+'%"')+'>'+h+'</th>'; });
+  html+='</tr></thead><tbody>';
+  const span=new Array(nrows).fill(0).map(()=>[]);
+  model.rows.forEach((r,ri)=>{
+    html+='<tr>';
+    r.cells.forEach(c=>{
+      const rs=c.rs||1; const last=(ri+rs-1)>=nrows-1;
+      const cls=[]; if(last) cls.push('lb'); if(r.sep && !word) cls.push('sep');
+      let st='';
+      if(word){
+        st=' style="padding:3pt 4pt;vertical-align:top;font-family:\'Times New Roman\';font-size:'+(model.landscape?'9':'10')+'pt;'+(last?'border-bottom:'+B+';':'')+(r.sep?'border-top:solid #BFBFBF 0.5pt;':'')+'"';
+      }
+      html+='<td'+(rs>1?' rowspan="'+rs+'"':'')+(cls.length&&!word?' class="'+cls.join(' ')+'"':'')+st+'>'+c.h+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  return html;
+}
+function apaBlock(n, model, word){
+  const nota='<i>Nota.</i> Elaboración propia con base en el marco teórico de la investigación.'+(n===1?scaleNote():'');
+  if(word) return '<p class="tnum">Tabla '+n+'</p><p class="ttitle">'+model.title+'</p>'+apaTable(model,true)+'<p class="nota">'+nota+'</p>';
+  return '<p class="tnum">Tabla '+n+'</p><p class="ttitle">'+model.title+'</p>'+apaTable(model,false)+'<p class="nota">'+nota+'</p>';
+}
+
+/* ============================================================
+   FIGURAS (SVG con colores fijos para exportar)
+   ============================================================ */
+const COL={lat:'#dbe7f5',latS:'#1d3b63',ind:'#fff4cf',indS:'#a37b17',arr:'#1d3b63',txt:'#14213d',lab:'#8a5a00'};
+function wrap(text, max){
+  const words=clean(text).split(' '); const out=[]; let cur='';
+  words.forEach(w=>{ if((cur+' '+w).trim().length>max && cur){ out.push(cur); cur=w; } else cur=(cur+' '+w).trim(); });
+  if(cur) out.push(cur); return out.length?out:[''];
+}
+function svgText(x,y,text,max,opt={}){
+  const L=wrap(text,max); const lh=opt.lh||14; const y0=y-(L.length-1)*lh/2;
+  return '<text x="'+x+'" y="'+y0+'" text-anchor="'+(opt.anchor||'middle')+'" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="'+(opt.size||12)+'" font-weight="'+(opt.weight||'normal')+'" fill="'+(opt.fill||COL.txt)+'">'+
+    L.map((l,i)=>'<tspan x="'+x+'" dy="'+(i?lh:0)+'">'+esc(l)+'</tspan>').join('')+'</text>';
+}
+function defsArrow(id){
+  return '<defs><marker id="'+id+'e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="'+COL.arr+'"/></marker></defs>';
+}
+function line(x1,y1,x2,y2,id,both){
+  return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+COL.arr+'" stroke-width="1.5" marker-end="url(#'+id+'e)"'+(both?' marker-start="url(#'+id+'e)"':'')+'/>';
+}
+function edge(cx,cy,rx,ry,tx,ty){ const dx=tx-cx, dy=ty-cy; const t=1/Math.sqrt((dx/rx)**2+(dy/ry)**2); return [cx+dx*t, cy+dy*t]; }
+function pill(x,y,t){ const w=t.length*7+12; return '<rect x="'+(x-w/2)+'" y="'+(y-10)+'" width="'+w+'" height="20" rx="10" fill="#fff" stroke="'+COL.lab+'" stroke-width="1"/>'+svgText(x,y,t,20,{size:11,weight:'bold',fill:COL.lab}); }
+function latent(cx,cy,name,rx=92,ry=34){ return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+COL.lat+'" stroke="'+COL.latS+'" stroke-width="1.6"/>'+svgText(cx,cy,cap(name),18,{weight:'bold',size:12}); }
+function indRect(x,y,w,label){ return '<rect x="'+x+'" y="'+(y-11)+'" width="'+w+'" height="22" rx="3" fill="'+COL.ind+'" stroke="'+COL.indS+'" stroke-width="1"/>'+svgText(x+w/2,y,label,14,{size:11}); }
+
+/* Modelo explicativo (PLS-SEM) */
+function figExplicativo(id){
+  const used=new Set();
+  let exo, end1, mid=null;
+  if(isMed()){
+    exo=S.factores.filter(filled).map(f=>({name:NP(f).name,code:codeOf(f.name,used),ind:lines(f.ind)}));
+    mid={name:NP(S.med).name,code:codeOf(S.med.name,used),ind:lines(S.med.ind)};
+    end1={name:NP(S.dep).name,code:codeOf(S.dep.name,used),ind:lines(S.dep.ind)};
+  } else {
+    exo=dimsOf(S.v1).map(d=>({name:NP(d).name,code:codeOf(d.name,used),ind:lines(d.ind)}));
+    const allInd=[]; dimsOf(S.v2).forEach(d=>lines(d.ind).forEach(s=>allInd.push(s)));
+    end1={name:NP(S.v2).name,code:codeOf(S.v2.name,used),ind:allInd};
+  }
+  const IW=64, RH=28;
+  let y=30; const ex=270;
+  const blocks=exo.map(b=>{ const h=Math.max(90, b.ind.length*RH+20); const cy=y+h/2; y+=h+10; return {...b,cy}; });
+  let H=y+10;
+  const midX=isMed()?600:0, endX=isMed()?860:660;
+  const cY=(blocks[0].cy+blocks[blocks.length-1].cy)/2;
+  if(isMed()) H=Math.max(H, cY+70+mid.ind.length*RH+20);
+  H=Math.max(H, cY+end1.ind.length*RH/2+40);
+  const W=isMed()?1060:850;
+  let s='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+defsArrow(id)+'<rect width="'+W+'" height="'+H+'" fill="#fff"/>';
+  // exógenas con indicadores a la izquierda
+  blocks.forEach(b=>{
+    b.ind.forEach((t,i)=>{ const iy=b.cy-(b.ind.length-1)*RH/2+i*RH; s+=indRect(20,iy,IW,b.code+(i+1)); const p=edge(ex,b.cy,92,34,20+IW,iy); s+=line(p[0],p[1],20+IW+2,iy,id); });
+    s+=latent(ex,b.cy,b.name);
+  });
+  const target = isMed()? {x:midX,y:cY} : {x:endX,y:cY};
+  blocks.forEach((b,i)=>{
+    const a=edge(ex,b.cy,92,34,target.x,target.y), z=edge(target.x,target.y,92,34,ex,b.cy);
+    s+=line(a[0],a[1],z[0],z[1],id);
+    s+=pill(a[0]+(z[0]-a[0])*.45, a[1]+(z[1]-a[1])*.45, 'H'+(i+1));
+  });
+  if(isMed()){
+    mid.ind.forEach((t,i)=>{ const iy=cY+70+i*RH; s+=indRect(midX-IW/2,iy,IW,mid.code+(i+1)); });
+    if(mid.ind.length){ s+=line(midX,cY+34,midX,cY+70-13,id); }
+    for(let i=1;i<mid.ind.length;i++){ /* indicadores apilados: conector vertical */ }
+    s+=latent(midX,cY,mid.name);
+    s+=line(midX+92,cY,endX-94,cY,id);
+    s+=pill((midX+92+endX-94)/2,cY,'H'+(blocks.length+1));
+  }
+  // endógena con indicadores a la derecha
+  const ix=endX+130;
+  end1.ind.forEach((t,i)=>{ const iy=cY-(end1.ind.length-1)*RH/2+i*RH; s+=indRect(ix,iy,IW,end1.code+(i+1)); const p=edge(endX,cY,92,34,ix,iy); s+=line(p[0],p[1],ix-2,iy,id); });
+  s+=latent(endX,cY,end1.name);
+  s+='</svg>';
+  return {svg:s,W,H,codes:[...blocks,...(mid?[mid]:[]),end1]};
+}
+
+/* Esquema del diseño correlacional */
+function figEsquema(id){
+  const W=640,H=230; const smp=sample();
+  let s='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'"><rect width="'+W+'" height="'+H+'" fill="#fff"/>';
+  const f='font-family="Times New Roman, serif" font-size="22" fill="#111"';
+  s+='<text x="60" y="122" '+f+' text-anchor="middle">M</text>';
+  s+='<text x="250" y="48" '+f+' text-anchor="middle">O<tspan font-size="14" dy="5">x</tspan></text>';
+  s+='<text x="250" y="200" '+f+' text-anchor="middle">O<tspan font-size="14" dy="5">y</tspan></text>';
+  s+='<line x1="78" y1="108" x2="228" y2="50" stroke="#111" stroke-width="1.4"/>';
+  s+='<line x1="78" y1="122" x2="228" y2="190" stroke="#111" stroke-width="1.4"/>';
+  s+='<line x1="250" y1="62" x2="250" y2="176" stroke="#111" stroke-width="1.4"/>';
+  s+='<text x="266" y="124" '+f+'>r</text>';
+  const leg=['Donde:','M = Muestra de estudio'+(smp?' (n = '+smp.n+')':''),'Ox = Observación de la variable '+NP(S.v1).name,'Oy = Observación de la variable '+NP(S.v2).name,'r = Relación entre las variables'];
+  let yy=50; leg.forEach((l,i)=>{ wrap(l,40).forEach((w,j)=>{ s+='<text x="330" y="'+yy+'" font-family="Times New Roman, serif" font-size="15" fill="#111"'+(i===0?' font-style="italic"':'')+'>'+esc(w)+'</text>'; yy+=21; }); yy+=3; });
+  s+='</svg>'; return {svg:s,W,H};
+}
+/* Modelo teórico correlacional */
+function figCorrModel(id){
+  const D1=dimsOf(S.v1), D2=dimsOf(S.v2);
+  const RH=58, top=70; const H=Math.max(top+D1.length*RH+30, 280); const W=820;
+  let s='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+defsArrow(id)+'<rect width="'+W+'" height="'+H+'" fill="#fff"/>';
+  s+='<rect x="20" y="16" width="270" height="'+(H-32)+'" rx="12" fill="#f3f7fc" stroke="'+COL.latS+'" stroke-dasharray="5 4"/>';
+  s+=svgText(155,38,'V1: '+cap(NP(S.v1).name),34,{weight:'bold',size:13});
+  const by=(H)/2; const bh=Math.max(120, D2.length*20+60);
+  s+='<rect x="540" y="'+(by-bh/2)+'" width="260" height="'+bh+'" rx="12" fill="'+COL.lat+'" stroke="'+COL.latS+'" stroke-width="1.6"/>';
+  s+=svgText(670,by-bh/2+24,'V2: '+cap(NP(S.v2).name),30,{weight:'bold',size:13});
+  D2.forEach((d,i)=>{ s+=svgText(670,by-bh/2+56+i*20,'• '+cap(NP(d).name),34,{size:12}); });
+  s+=line(292,38,538,by-bh/2+24,id,true); s+=pill(415,(38+by-bh/2+24)/2-10,'HG');
+  D1.forEach((d,i)=>{
+    const cy=top+i*RH+RH/2;
+    s+='<rect x="45" y="'+(cy-20)+'" width="220" height="40" rx="8" fill="#fff" stroke="'+COL.latS+'" stroke-width="1.3"/>';
+    s+=svgText(155,cy,cap(NP(d).name),30,{size:12});
+    s+=line(267,cy,538,by+(i-(D1.length-1)/2)*14,id,true);
+    s+=pill(400,cy+(by+(i-(D1.length-1)/2)*14-cy)*.49,'H'+(i+1));
+  });
+  s+='</svg>'; return {svg:s,W,H};
+}
+function figures(){
+  if(S.alcance==='correlacional'){
+    return [
+      {n:1,title:'Esquema del diseño de investigación correlacional',nota:({vara2012:'Elaboración propia con base en el diseño descriptivo correlacional de Vara-Horna (2012, p. 210).',bernal2010:'Elaboración propia con base en la investigación correlacional de Bernal (2010, p. 114).',vill2020:'Elaboración propia con base en el diseño transeccional correlacional-causal de Villanueva (2020, p. 67).'})[S.autor]||'Elaboración propia con base en el diseño transeccional correlacional-causal de Hernández Sampieri et al. (2014, p. 157).',...figEsquema('fa')},
+      {n:2,title:'Modelo teórico de la investigación',nota:'Elaboración propia. HG = hipótesis general; H1…H'+dimsOf(S.v1).length+' = hipótesis específicas.',...figCorrModel('fb')}
+    ];
+  }
+  const e=figExplicativo('fc');
+  return [{n:1,title:'Modelo teórico de la investigación (modelo estructural PLS-SEM)',nota:'Elaboración propia. Las elipses representan variables latentes (constructos) y los rectángulos, indicadores observables; H1…H'+(isMed()?S.factores.filter(filled).length+1:dimsOf(S.v1).length)+' = hipótesis específicas.',svg:e.svg,W:e.W,H:e.H}];
+}
+function svgToPng(svg,W,H,scale=2){
+  return new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>{ const c=document.createElement('canvas'); c.width=W*scale; c.height=H*scale; const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,c.width,c.height); g.drawImage(img,0,0,c.width,c.height); res(c.toDataURL('image/png')); };
+    img.onerror=rej;
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  });
+}
+
+/* ============================================================
+   VALIDACIÓN POR PASO
+   ============================================================ */
+function issues(step){
+  const out=[];
+  if(step===0){ if(!S.alcance) out.push('Elige el alcance de la investigación (correlacional o explicativo).'); }
+  if(step===1){
+    if(isMed()){
+      const F=S.factores.filter(filled);
+      if(F.length<2) out.push('Registra al menos 2 factores (variables exógenas).');
+      F.forEach((f,i)=>{ if(!lines(f.ind).length) out.push('El factor "'+clean(f.name)+'" necesita al menos un indicador.'); });
+      if(!filled(S.med)) out.push('Escribe el nombre de la variable mediadora.'); else if(!lines(S.med.ind).length) out.push('La variable mediadora necesita indicadores.');
+      if(!filled(S.dep)) out.push('Escribe el nombre de la variable dependiente.'); else if(!lines(S.dep.ind).length) out.push('La variable dependiente necesita indicadores.');
+    } else {
+      [[S.v1,'Variable 1',2],[S.v2,'Variable 2',1]].forEach(([v,l,min])=>{
+        if(!filled(v)) out.push('Escribe el nombre de la '+l+'.');
+        const D=dimsOf(v); if(D.length<min) out.push('La '+l+' necesita al menos '+min+' dimensi'+(min>1?'ones':'ón')+'.');
+        D.forEach(d=>{ if(!lines(d.ind).length) out.push('La dimensión "'+clean(d.name)+'" necesita al menos un indicador.'); });
+      });
+    }
+  }
+  if(step===2){
+    if(!clean(S.pob)) out.push('Indica la población o unidad de estudio (p. ej., "los colaboradores").');
+    if(!clean(S.org)) out.push('Indica la organización, empresa o rubro.');
+    if(!clean(S.lugar)) out.push('Indica el lugar.');
+    if(!/^\d{4}$/.test(clean(S.anio))) out.push('Indica el año con 4 dígitos.');
+  }
+  if(step===4){ if(!(parseInt(S.N,10)>0)) out.push('Indica el tamaño de la población (N).'); }
+  return out;
+}
+function firstInvalid(){ for(let i=0;i<STEPS.length;i++){ if(issues(i).length) return i; } return STEPS.length; }
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const main = $('#main');
+function renderStepper(){
+  const fi=firstInvalid();
+  $('#stepper').innerHTML=STEPS.map((n,i)=>'<button type="button" class="st '+(i===S.step?'cur':'')+(i<S.step&&!issues(i).length?' done':'')+'" data-go="'+i+'" '+(i>fi?'disabled':'')+'><span class="n">'+(i<S.step&&!issues(i).length?'✓':(i+1))+'</span>'+n+'</button>').join('');
+  $('#prog').style.width=((S.step)/(STEPS.length-1)*100)+'%';
+}
+function head(k,t,p){ return '<div class="step-head"><div class="kicker">Paso '+(S.step+1)+' de '+STEPS.length+' · '+k+'</div><h2>'+t+'</h2><p>'+p+'</p></div>'; }
+function navBtns(){
+  const last=S.step===STEPS.length-1;
+  return '<div class="nav"><div>'+(S.step>0?'<button type="button" class="btn sec" data-act="prev">← Anterior</button>':'')+'</div><div>'+(last?'':'<button type="button" class="btn pri" data-act="next">Siguiente →</button>')+'</div></div>';
+}
+const fld = (label, path, val, ph, extra='') => '<label class="f">'+label+'</label><input class="inp" data-b="'+path+'" value="'+esc(val)+'" placeholder="'+esc(ph||'')+'" '+extra+'>';
+function gsel(path,val){
+  const o=[['auto','Auto'],['m','el'],['f','la'],['mp','los'],['fp','las']];
+  return '<div class="w-art"><label class="f">Artículo</label><select class="inp" data-b="'+path+'" data-rr="1">'+o.map(([v,l])=>'<option value="'+v+'" '+(val===v?'selected':'')+'>'+l+'</option>').join('')+'</select></div>';
+}
+function artPreview(x){ return filled(x) ? '<div class="hint">Se redactará: <b>'+esc(A(x))+'</b>'+(x.g==='auto'?' (si el artículo es incorrecto, cámbialo)':'')+'</div>' : ''; }
+
+const R = {};
+R[0]=()=>{
+  const ch=(name,val,cur,t,d,dis)=>'<label class="choice '+(cur===val?'on':'')+(dis?' dis':'')+'"><input type="radio" name="'+name+'" value="'+val+'" data-b="'+name+'" data-rr="1" '+(cur===val?'checked':'')+'><b>'+t+'</b><span>'+d+'</span></label>';
+  return head('Enfoque','Alcance y modelo de la investigación','Para la Escuela Profesional de Administración solo se trabajan los alcances correlacional y explicativo, con enfoque cuantitativo (Reglamento de Grados y Títulos UNASAM, Anexo 2).')+
+  '<div class="card"><h3>Autor de referencia metodológica</h3><p class="sub">Elige con qué autor sustentarás tu metodología. Los textos del paso 5 se redactan con su terminología y lo citan con la página exacta donde lo explica.</p>'+
+  '<label class="f">Selecciona el autor antes de completar las variables</label><select class="inp" data-b="autor" data-rr="1">'+Object.entries(AUT).map(([k,a])=>'<option value="'+k+'" '+(S.autor===k?'selected':'')+'>'+esc(a.label)+'</option>').join('')+'</select>'+
+  '<div class="hint" style="margin-top:8px">'+AU().ref+'</div><div class="hint">'+esc(AU().note)+'</div>'+
+  (AU().url?'<div style="margin-top:6px"><a href="'+AU().url+'" target="_blank" rel="noopener noreferrer">Consultar obra de referencia ↗</a></div>':'')+'</div>'+
+  '<div class="card"><h3>Alcance (nivel de investigación)</h3><p class="sub">Determina la redacción de los problemas, los objetivos, las hipótesis y el análisis estadístico.</p><div class="choices">'+
+    ch('alcance','correlacional',S.alcance,'Correlacional','Mide el grado de relación entre V1 y V2. Diseño M – Ox r Oy; prueba Rho de Spearman.')+
+    ch('alcance','explicativo',S.alcance,'Explicativo','Determina la influencia (causa-efecto) de V1 en V2. Modelo de ecuaciones estructurales PLS-SEM en SmartPLS.')+
+  '</div></div>'+
+  (S.alcance==='explicativo'?'<div class="card step"><h3>Estructura del modelo explicativo</h3><p class="sub">Elige cómo se relacionan tus variables.</p><div class="choices">'+
+    ch('modelo','estandar',S.modelo,'Estándar: V1 (dimensiones) → V2','Cada dimensión de V1 influye en V2. Es el esquema más usado en las tesis de la FAT.')+
+    ch('modelo','mediador',S.modelo,'Con variable mediadora','Factores → variable mediadora → variable dependiente, como en Carbajulca y Lirio (2025).')+
+  '</div></div>':'')+
+  '<div class="card"><div class="grid2"><div><label class="f">Tipo de investigación (por su finalidad)</label><select class="inp" data-b="tipo"><option value="aplicada" '+(S.tipo==='aplicada'?'selected':'')+'>Aplicada</option><option value="basica" '+(S.tipo==='basica'?'selected':'')+'>Básica</option></select><div class="hint">Las tesis explicativas de la FAT suelen declararse como aplicadas; las correlacionales, como básicas o aplicadas. Confírmalo con tu asesor.</div></div>'+
+  '<div><label class="f">Redacción de la metodología</label><select class="inp" data-b="tiempo"><option value="proyecto" '+(S.tiempo==='proyecto'?'selected':'')+'>Proyecto de tesis (tiempo futuro)</option><option value="informe" '+(S.tiempo==='informe'?'selected':'')+'>Informe final de tesis (tiempo pasado)</option></select></div></div></div>'+
+  '<div class="alert info">¿Primera vez? <span><button type="button" class="btn sec sm" data-act="example" style="margin-left:4px">Cargar un ejemplo completo</button> para ver cómo funciona. Tu sesión se guarda automáticamente en este navegador.</span></div>';
+};
+function dimEditor(path, v, label, minDims){
+  let h='<div class="card"><div class="vblock-h"><span class="tag '+(label==='Variable 1'?'':'gold')+'">'+label+'</span><h3 style="margin:0">'+(label==='Variable 1'?(S.alcance==='explicativo'?'Variable independiente':'Primera variable'):(S.alcance==='explicativo'?'Variable dependiente':'Segunda variable'))+'</h3></div>';
+  h+='<div class="row"><div class="grow">'+fld('Nombre de la variable',path+'.name',v.name,label==='Variable 1'?'p. ej., Clima organizacional':'p. ej., Desempeño laboral')+'</div>'+gsel(path+'.g',v.g)+'</div><div data-live="art:'+path+'">'+artPreview(v)+'</div>';
+  h+='<div style="margin-top:10px"><label class="f">Definición conceptual <small>(opcional ahora; con cita APA del autor; aparece en la tabla de operacionalización)</small></label><textarea class="inp" data-b="'+path+'.def" rows="2" placeholder="p. ej., Percepción compartida de los trabajadores sobre… (Chiavenato, 2020).">'+esc(v.def)+'</textarea></div>';
+  v.dims.forEach((d,i)=>{
+    h+='<div class="vblock"><div class="vblock-h"><span class="tag green">Dimensión '+(i+1)+'</span>'+(v.dims.length>minDims?'<button type="button" class="icon-btn" data-act="deldim" data-p="'+path+'" data-i="'+i+'">Quitar</button>':'')+'</div>';
+    h+='<div class="row"><div class="grow">'+fld('Nombre de la dimensión',path+'.dims.'+i+'.name',d.name,'p. ej., Comunicación')+'</div>'+gsel(path+'.dims.'+i+'.g',d.g)+'</div>';
+    h+='<div style="margin-top:8px"><label class="f">Indicadores <small>(uno por línea)</small></label><textarea class="inp" data-b="'+path+'.dims.'+i+'.ind" rows="3" placeholder="Comunicación horizontal&#10;Comunicación vertical&#10;Canales de comunicación">'+esc(d.ind)+'</textarea></div></div>';
+  });
+  if(v.dims.length<6) h+='<button type="button" class="add-btn" data-act="adddim" data-p="'+path+'">+ Agregar dimensión</button>';
+  return h+'</div>';
+}
+function consEditor(path,x,tag,title,cls,del){
+  return '<div class="vblock"><div class="vblock-h"><span class="tag '+cls+'">'+tag+'</span><b style="color:var(--navy)">'+title+'</b>'+(del?'<button type="button" class="icon-btn" data-act="delf" data-i="'+del.i+'">Quitar</button>':'')+'</div>'+
+  '<div class="row"><div class="grow">'+fld('Nombre del constructo',path+'.name',x.name,'p. ej., Motivación ambiental')+'</div>'+gsel(path+'.g',x.g)+'</div><div data-live="art:'+path+'">'+artPreview(x)+'</div>'+
+  '<div class="grid2" style="margin-top:8px"><div><label class="f">Indicadores <small>(uno por línea; se recomiendan 3 o más)</small></label><textarea class="inp" data-b="'+path+'.ind" rows="4">'+esc(x.ind)+'</textarea></div>'+
+  '<div><label class="f">Definición conceptual <small>(con cita APA)</small></label><textarea class="inp" data-b="'+path+'.def" rows="4">'+esc(x.def)+'</textarea></div></div></div>';
+}
+R[1]=()=>{
+  let h=head('Variables','Variables, dimensiones e indicadores','Los indicadores se convertirán en los ítems del cuestionario. Escribe los nombres tal como aparecerán en tu título.');
+  if(isMed()){
+    h+='<div class="card"><h3>Factores (variables exógenas)</h3><p class="sub">Cada factor influye en la variable mediadora (H1, H2, …).</p>';
+    S.factores.forEach((f,i)=>{ h+=consEditor('factores.'+i,f,'Factor '+(i+1),'Variable exógena','',S.factores.length>2?{i}:null); });
+    if(S.factores.length<6) h+='<button type="button" class="add-btn" data-act="addf">+ Agregar factor</button>';
+    h+='</div><div class="card"><h3>Variable mediadora y variable dependiente</h3>'+consEditor('med',S.med,'Mediadora','Variable endógena mediadora','gold')+consEditor('dep',S.dep,'Dependiente','Variable endógena final','green')+'</div>';
+  } else {
+    h+=dimEditor('v1',S.v1,'Variable 1',2)+dimEditor('v2',S.v2,'Variable 2',1);
+  }
+  return h;
+};
+function titleChecks(t){
+  const u=unacc(t);
+  const has = s => s && u.includes(unacc(clean(s)).slice(0,Math.min(14,unacc(clean(s)).length)));
+  const items = isMed() ? [['Variable mediadora',NP(S.med).name],['Variable dependiente',NP(S.dep).name]] : [['Variable 1',NP(S.v1).name],['Variable 2',NP(S.v2).name]];
+  items.push(['Organización / rubro',clean(S.org).replace(/^(el|la|los|las)\s/i,'')],['Población',clean(S.pob).replace(/^(el|la|los|las)\s/i,'')],['Lugar',S.lugar],['Año',S.anio]);
+  const words=clean(t).split(' ').length;
+  return '<div class="checks">'+items.map(([l,s])=>'<span class="chk '+(has(s)?'ok':'')+'">'+l+'</span>').join('')+'<span class="chk">'+words+' palabras</span></div>';
+}
+function liveTitle(){
+  const o=titleOptions();
+  return o.map((x,i)=>'<label class="topt '+(!S.tituloEdited&&S.tituloSel===i?'on':'')+'" data-act="tsel" data-i="'+i+'"><input type="radio" class="sr" name="tsel" value="'+i+'" tabindex="-1"><small>'+x.label+'</small><div>'+esc(x.text)+'</div></label>').join('');
+}
+R[2]=()=>{
+  return head('Título','Contexto y título de la investigación','Estructura del título: [V1, V2, organización/empresa/rubro, población, lugar, año]. Escribe la población y la organización con su artículo.')+
+  '<div class="card"><div class="grid2"><div>'+fld('Población / unidad de estudio <small>(con artículo)</small>','pob',S.pob,'p. ej., los colaboradores')+'</div><div>'+fld('Organización, empresa o rubro <small>(con artículo)</small>','org',S.org,'p. ej., la Municipalidad Provincial de Huaraz')+'</div></div>'+
+  '<div class="grid2" style="margin-top:12px"><div>'+fld('Lugar','lugar',S.lugar,'p. ej., Huaraz')+'</div><div>'+fld('Año','anio',S.anio,'2026','inputmode="numeric" maxlength="4"')+'</div></div></div>'+
+  '<div class="card"><h3>Elige una propuesta de título</h3><p class="sub">Todas siguen el formato de las tesis de Administración de la FAT-UNASAM.</p><div data-live="titles">'+liveTitle()+'</div>'+
+  '<label class="f" style="margin-top:14px">Título final <small>(puedes editarlo)</small></label><textarea class="inp" id="tituloTA" data-b="titulo" data-te="1" rows="2">'+esc(getTitle())+'</textarea>'+
+  '<div data-live="tcheck">'+titleChecks(getTitle())+'</div>'+
+  '<div class="btn-row" style="margin-top:10px"><button type="button" class="btn sec sm" data-copy="title">Copiar título</button><button type="button" class="btn sec sm" data-copy="titleUp">Copiar en MAYÚSCULAS (carátula)</button>'+(S.tituloEdited?'<button type="button" class="btn sec sm" data-act="tReset">Volver a la propuesta</button>':'')+'</div></div>';
+};
+function stm(lbl,key,text){
+  const mod=!!S.ov[key];
+  return '<div class="stm'+(mod?' has-mod':'')+'"><span class="lbl">'+lbl+'</span><div class="ed'+(mod?' mod':'')+'" contenteditable="true" spellcheck="true" data-k="'+key+'">'+esc(text)+'</div><button type="button" class="rst" data-act="rst" data-k="'+key+'" title="Restaurar texto generado">↺</button></div>';
+}
+R[3]=()=>{
+  const P=POH();
+  let h=head('POH','Problemas, objetivos e hipótesis','Redactados con la estructura de las tesis aprobadas de la FAT. Haz clic en cualquier texto para editarlo; los cambios se guardan solos.');
+  h+='<div class="poh-grid">';
+  h+='<div class="card poh-col"><h4>Problemas</h4><div class="sec-t">Problema general</div>'+stm('PG','pg',P.pg)+'<div class="sec-t">Problemas específicos</div>'+P.pe.map((s,i)=>stm('PE'+(i+1),'pe'+i,s)).join('')+'</div>';
+  h+='<div class="card poh-col"><h4>Objetivos</h4><div class="sec-t">Objetivo general</div>'+stm('OG','og',P.og)+'<div class="sec-t">Objetivos específicos</div>'+P.oe.map((s,i)=>stm('OE'+(i+1),'oe'+i,s)).join('')+'</div>';
+  h+='<div class="card poh-col"><h4>Hipótesis</h4><div class="sec-t">Hipótesis general</div>'+stm('HG','hg',P.hg)+'<div class="sec-t">Hipótesis específicas</div>'+P.he.map((s,i)=>stm('H'+(i+1),'he'+i,s)).join('')+
+    '<label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:13px;cursor:pointer"><input type="checkbox" data-b="showH0" data-rr="1" '+(S.showH0?'checked':'')+'> Mostrar hipótesis nulas (H₀) para la prueba de hipótesis</label>'+
+    (S.showH0?'<div class="sec-t">Hipótesis nulas</div>'+stm('H0','h0g',P.h0g)+P.h0e.map((s,i)=>stm('H0'+(i+1),'h0e'+i,s)).join(''):'')+'</div>';
+  h+='</div><div class="alert info" style="margin-top:4px">Verbos usados según el alcance: <b>'+(S.alcance==='correlacional'?'“Determinar / Establecer la relación”':'“Determinar / Establecer la influencia”')+'</b>. Problema, objetivo e hipótesis guardan correspondencia uno a uno, como exige la matriz de consistencia'+(isVara()?': “a cada problema formulado corresponde un objetivo” (<a href="'+VARA_URL+'#page=185" target="_blank" rel="noopener noreferrer">Vara-Horna, 2012, p. 185 ↗</a>).':'.')+'</div>'+
+  '<div class="btn-row"><button type="button" class="btn sec sm" data-copy="poh">Copiar POH</button></div>';
+  return h;
+};
+function liveSample(){
+  const s=sample();
+  if(!s) return '<div class="hint">Ingresa N para calcular la muestra.</div>';
+  let h='';
+  if(!s.censal){
+    h+='<div class="formula">n = N·Z²·p·q / [(N − 1)·e² + Z²·p·q]</div>';
+    h+='<div class="formula" style="font-size:15px">n = '+s.N+'·'+s.z+'²·0,5·0,5 / [('+s.N+' − 1)·'+s.e+'² + '+s.z+'²·0,5·0,5] = '+s.raw.toFixed(2).replace('.',',')+' ≈ <b>'+s.n+'</b></div>';
+  }
+  h+='<div class="kpi"><div><b>'+s.N+'</b><span>Población (N)</span></div><div><b>'+s.n+'</b><span>Muestra (n)'+(s.censal?' · censal':'')+'</span></div><div><b>'+totalItems()+'</b><span>Ítems del cuestionario</span></div></div>';
+  if(S.alcance==='explicativo'){
+    const m=pls10();
+    h+='<div class="alert '+(s.n>=m?'info':'warn')+'" style="margin-top:12px">Regla referencial de las 10 veces para PLS-SEM (Hair et al., 2019): se recomienda una muestra mínima de <b>'+m+'</b>. '+(s.n>=m?'Tu muestra la cumple.':'Tu muestra es menor; coméntalo con tu asesor.')+'</div>';
+  }
+  return h;
+}
+R[4]=()=>{
+  const M=method();
+  let h=head('Metodología','Metodología de la investigación','Numeración según el Anexo 2 del Reglamento (proyecto de tesis cuantitativo). Los textos se adaptan al alcance elegido y son editables.');
+  h+='<div class="card"><h3>Población y muestra</h3><p class="sub">Fórmula del muestreo aleatorio simple para poblaciones finitas, la misma usada en las tesis de la FAT.</p><div class="grid4">'+
+    '<div>'+fld('Población (N)','N',S.N,'p. ej., 120','inputmode="numeric"')+'</div>'+
+    '<div><label class="f">Nivel de confianza</label><select class="inp" data-b="conf">'+['90','95','99'].map(v=>'<option '+(S.conf===v?'selected':'')+' value="'+v+'">'+v+' % (Z = '+Z[v]+')</option>').join('')+'</select></div>'+
+    '<div><label class="f">Margen de error (e)</label><select class="inp" data-b="e">'+['0.03','0.05','0.07','0.10'].map(v=>'<option '+(S.e===v?'selected':'')+' value="'+v+'">'+v.replace('.',',')+'</option>').join('')+'</select></div>'+
+    '<div><label class="f">Escala Likert</label><select class="inp" data-b="likert" data-rr="1"><option value="5" '+(S.likert==='5'?'selected':'')+'>5 puntos</option><option value="7" '+(S.likert==='7'?'selected':'')+'>7 puntos</option></select></div>'+
+  '</div><div class="grid2" style="margin-top:12px"><div><label class="f">Ítems por indicador</label><select class="inp" data-b="itemsInd">'+['1','2','3','4'].map(v=>'<option '+(S.itemsInd===v?'selected':'')+'>'+v+'</option>').join('')+'</select></div>'+
+  '<div style="display:flex;align-items:flex-end"><label style="display:flex;gap:8px;align-items:center;font-size:13.5px;cursor:pointer;padding-bottom:9px"><input type="checkbox" data-b="censal" '+(S.censal?'checked':'')+'> Muestra censal (se encuesta a toda la población)</label></div></div>'+
+  '<div data-live="sample" style="margin-top:12px">'+liveSample()+'</div></div>';
+  h+='<div class="card mth"><h3>III. Metodología</h3><p class="sub">Haz clic en un párrafo para editarlo.</p><div data-live="meth">'+methBody(M)+'</div><div class="btn-row" style="margin-top:12px"><button type="button" class="btn sec sm" data-copy="meth">Copiar metodología</button></div></div>';
+  return h;
+};
+function srcLinks(k){
+  const ps=srcPages(k); if(!ps.length) return '';
+  const a=AU();
+  const items=ps.map(p=> a.link ? '<a href="'+a.link(p)+'" target="_blank" rel="noopener noreferrer">p. '+p+' ↗</a>' : 'p. '+p);
+  return '<div class="hint" style="margin:-2px 0 6px 2px">Sustento: '+esc(a.short.replace(/, \d{4}$/,''))+' ('+a.short.slice(-4)+'), '+items.join(', ')+(!a.link&&a.url?' · <a href="'+a.url+'" target="_blank" rel="noopener noreferrer">obra ↗</a>':'')+'</div>';
+}
+function methBody(M){ return METH_ORDER.map(([t,k])=>'<h4>'+t+'</h4>'+stm('','m_'+k,M[k]).replace('<span class="lbl"></span>','')+srcLinks(k)).join(''); }
+R[5]=()=>{
+  const F=figures();
+  let h=head('Modelo gráfico','Modelo gráfico de la investigación',S.alcance==='correlacional'?'Esquema del diseño correlacional (M – Ox r Oy), como en las tesis correlacionales de la UNASAM, y modelo de hipótesis.':'Modelo estructural para SmartPLS: constructos (elipses), indicadores (rectángulos) e hipótesis (H). Replica la lógica del artículo guía de Carbajulca y Lirio (2025).');
+  F.forEach(f=>{
+    h+='<div class="card"><div class="fig-cap"><b>Figura '+f.n+'</b><i>'+esc(f.title)+'</i></div><div class="fig-box">'+f.svg+'</div><p class="hint" style="font-family:Times New Roman,serif;font-size:14px"><i>Nota.</i> '+esc(f.nota)+'</p><div class="btn-row"><button type="button" class="btn sec sm" data-act="png" data-f="'+(f.n-1)+'">Descargar PNG</button></div></div>';
+  });
+  if(S.alcance==='explicativo'){
+    const e=figExplicativo('tmp');
+    h+='<div class="card"><h3>Códigos de los indicadores</h3><p class="sub">Úsalos como nombres de los ítems al cargar los datos en SmartPLS.</p><div style="font-size:13.5px;columns:2;column-gap:28px">'+e.codes.map(c=>'<div style="break-inside:avoid;margin-bottom:8px"><b>'+esc(cap(c.name))+'</b><br>'+c.ind.map((t,i)=>'<span class="tag" style="margin:2px 4px 2px 0">'+c.code+(i+1)+'</span>'+esc(t)).join('<br>')+'</div>').join('')+'</div></div>';
+  }
+  return h;
+};
+R[6]=()=>{
+  const missingDefs = isMed() ? constructs().some(c=>!clean(c.x.def)) : [S.v1,S.v2].some(v=>!clean(v.def));
+  return head('Tablas APA','Tablas en formato APA 7.ª edición y descarga','Tabla de operacionalización y matriz de consistencia con el formato APA 7: número en negrita, título en cursiva, solo líneas horizontales y nota al pie. La matriz se exporta en una página horizontal.')+
+  (missingDefs?'<div class="alert warn">Faltan definiciones conceptuales: aparecerán como <b>[Completar…]</b>. Puedes agregarlas en el paso 2 (Variables).</div>':'')+
+  '<div class="card" style="background:linear-gradient(180deg,#fff,#fbf8f1)"><h3>Documento completo</h3><p class="sub">Incluye título, problemas, objetivos, hipótesis, operacionalización, metodología, figuras, referencias y la matriz de consistencia (anexo), con la numeración del Reglamento UNASAM. Se abre en Microsoft Word.</p>'+
+  '<div class="btn-row"><button type="button" class="btn gold" data-act="docAll">⬇ Descargar documento Word (APA 7)</button><button type="button" class="btn sec" data-act="saveFile">Guardar sesión (.json)</button></div></div>'+
+  '<div class="card"><div class="btn-row" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Tabla 1. Operacionalización de variables</h3><div class="btn-row"><button type="button" class="btn sec sm" data-copy="t1">Copiar tabla</button><button type="button" class="btn pri sm" data-act="docT1">⬇ Word</button></div></div><div class="paper" id="pT1">'+apaBlock(1,opTable(),false)+'</div></div>'+
+  '<div class="card"><div class="btn-row" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Tabla 2. Matriz de consistencia</h3><div class="btn-row"><button type="button" class="btn sec sm" data-copy="t2">Copiar tabla</button><button type="button" class="btn pri sm" data-act="docT2">⬇ Word (horizontal)</button></div></div><div class="paper" id="pT2">'+apaBlock(2,consTable(),false)+'</div></div>'+
+  navBtns().replace('<div class="nav">','<div class="nav" style="margin-top:6px">');
+};
+
+function render(scroll){
+  renderStepper();
+  let html=R[S.step]();
+  if(S.step!==6) html+=navBtns();
+  main.innerHTML='<div class="step">'+html+'</div>';
+  if(scroll) window.scrollTo({top:0,behavior:'smooth'});
+}
+function refreshLive(){
+  document.querySelectorAll('[data-live]').forEach(el=>{
+    const k=el.dataset.live;
+    if(k==='titles') el.innerHTML=liveTitle();
+    else if(k==='tcheck') el.innerHTML=titleChecks(getTitle());
+    else if(k==='sample') el.innerHTML=liveSample();
+    else if(k==='meth'){ if(!el.contains(document.activeElement)) el.innerHTML=methBody(method()); }
+    else if(k.startsWith('art:')){ const x=getPath(k.slice(4)); if(x) el.innerHTML=artPreview(x); }
+  });
+  const ta=document.getElementById('tituloTA');
+  if(ta && document.activeElement!==ta) ta.value=getTitle();
+  renderStepper();
+}
+
+/* ============================================================
+   EVENTOS
+   ============================================================ */
+function getPath(p){ return p.split('.').reduce((o,k)=>o==null?o:o[k],S); }
+function setPath(p,v){ const ks=p.split('.'); const last=ks.pop(); const o=ks.reduce((o,k)=>o[k],S); o[last]=v; }
+main.addEventListener('input',e=>{
+  const el=e.target;
+  if(el.dataset.k){ // texto editable
+    const k=el.dataset.k, txt=el.innerText.replace(/\s+/g,' ').trim();
+    if(txt && txt!==BASES[k]) S.ov[k]={base:BASES[k],text:txt}; else delete S.ov[k];
+    el.classList.toggle('mod',!!S.ov[k]); el.parentElement.classList.toggle('has-mod',!!S.ov[k]);
+    save(); return;
+  }
+  if(!el.dataset.b) return;
+  if(el.dataset.te){ S.titulo=el.value; S.tituloEdited=true; save(); refreshLive(); return; }
+  const v = el.type==='checkbox' ? el.checked : el.value;
+  setPath(el.dataset.b, v);
+  if(el.dataset.b==='alcance'){ if(v==='correlacional') S.modelo='estandar'; S.tipo = v==='explicativo'?'aplicada':S.tipo; }
+  save();
+  if(el.dataset.rr || el.type==='radio' || el.type==='checkbox') render(false); else refreshLive();
+});
+main.addEventListener('change',e=>{ if(e.target.tagName==='SELECT' && !e.target.dataset.rr){ refreshLive(); } });
+main.addEventListener('paste',e=>{ if(e.target.closest && e.target.closest('.ed')){ e.preventDefault(); const t=(e.clipboardData||window.clipboardData).getData('text/plain'); document.execCommand('insertText',false,t.replace(/\s+/g,' ')); } });
+main.addEventListener('keydown',e=>{ if(e.target.classList && e.target.classList.contains('ed') && e.key==='Enter'){ e.preventDefault(); e.target.blur(); } });
+
+document.addEventListener('click',async e=>{
+  const go=e.target.closest('[data-go]'); if(go && !go.disabled){ S.step=+go.dataset.go; save(); render(true); return; }
+  const b=e.target.closest('[data-act],[data-copy]'); if(!b) return;
+  const a=b.dataset.act;
+  if(b.dataset.copy) return doCopy(b.dataset.copy);
+  if(a==='next'){ const is=issues(S.step); if(is.length){ showIssues(is); return; } S.step=Math.min(S.step+1,STEPS.length-1); save(); render(true); }
+  else if(a==='prev'){ S.step=Math.max(0,S.step-1); save(); render(true); }
+  else if(a==='adddim'){ getPath(b.dataset.p).dims.push({name:'',g:'auto',ind:''}); save(); render(false); }
+  else if(a==='deldim'){ getPath(b.dataset.p).dims.splice(+b.dataset.i,1); save(); render(false); }
+  else if(a==='addf'){ S.factores.push(blankCons()); save(); render(false); }
+  else if(a==='delf'){ S.factores.splice(+b.dataset.i,1); save(); render(false); }
+  else if(a==='tsel'){ e.preventDefault(); S.tituloSel=+b.dataset.i; S.tituloEdited=false; S.titulo=''; save(); render(false); }
+  else if(a==='tReset'){ S.tituloEdited=false; S.titulo=''; save(); render(false); }
+  else if(a==='rst'){ delete S.ov[b.dataset.k]; save(); render(false); }
+  else if(a==='example'){ loadExample(); }
+  else if(a==='png'){ const f=figures()[+b.dataset.f]; const url=await svgToPng(f.svg,f.W,f.H,2); dl(url,'Figura_'+f.n+'.png'); toast('Figura descargada'); }
+  else if(a==='docAll'){ await exportDoc('all'); }
+  else if(a==='docT1'){ await exportDoc('t1'); }
+  else if(a==='docT2'){ await exportDoc('t2'); }
+  else if(a==='saveFile'){ saveFile(); }
+});
+function showIssues(list){
+  const old=main.querySelector('.alert.err'); if(old) old.remove();
+  const d=document.createElement('div'); d.className='alert err step'; d.innerHTML='<div><b>Completa lo siguiente para continuar:</b><ul>'+list.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>';
+  main.querySelector('.step-head').after(d); d.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* Copiar */
+function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('on'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('on'),2200); }
+async function copyRich(html, text){
+  try{
+    if(navigator.clipboard && window.ClipboardItem){
+      await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]);
+      return true;
+    }
+  }catch(e){}
+  const d=document.createElement('div'); d.innerHTML=html; d.style.cssText='position:fixed;left:-9999px;top:0;background:#fff'; document.body.appendChild(d);
+  const r=document.createRange(); r.selectNodeContents(d); const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+  let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+  s.removeAllRanges(); d.remove(); return ok;
+}
+function pohText(){
+  const P=POH();
+  const L=['PROBLEMA GENERAL',P.pg,'','PROBLEMAS ESPECÍFICOS',...P.pe.map((s,i)=>(i+1)+'. '+s),'','OBJETIVO GENERAL',P.og,'','OBJETIVOS ESPECÍFICOS',...P.oe.map((s,i)=>(i+1)+'. '+s),'','HIPÓTESIS GENERAL',P.hg,'','HIPÓTESIS ESPECÍFICAS',...P.he.map((s,i)=>(i+1)+'. '+s)];
+  if(S.showH0){ L.push('','HIPÓTESIS NULAS',P.h0g,...P.h0e.map((s,i)=>(i+1)+'. '+s)); }
+  return L.join('\n');
+}
+async function doCopy(what){
+  let ok=false;
+  if(what==='title') ok=await copyRich(esc(getTitle()),getTitle());
+  else if(what==='titleUp') ok=await copyRich(esc(getTitle().toUpperCase()),getTitle().toUpperCase());
+  else if(what==='poh'){ const t=pohText(); ok=await copyRich('<div style="font-family:Times New Roman;font-size:12pt">'+esc(t).replace(/\n/g,'<br>')+'</div>',t); }
+  else if(what==='meth'){ const M=method(); const t=METH_ORDER.map(([h,k])=>h+'\n'+M[k]).join('\n\n'); ok=await copyRich('<div style="font-family:Times New Roman;font-size:12pt">'+METH_ORDER.map(([h,k])=>'<p><b>'+h+'</b></p><p>'+esc(M[k])+'</p>').join('')+'</div>',t); }
+  else if(what==='t1'||what==='t2'){ const m=what==='t1'?opTable():consTable(); const html='<div style="font-family:Times New Roman;font-size:12pt"><p><b>Tabla '+(what==='t1'?1:2)+'</b></p><p><i>'+m.title+'</i></p>'+apaTable(m,true)+'<p><i>Nota.</i> Elaboración propia con base en el marco teórico de la investigación.'+(what==='t1'?scaleNote():'')+'</p></div>'; ok=await copyRich(html,document.getElementById(what==='t1'?'pT1':'pT2').innerText); }
+  toast(ok?'Copiado. Pégalo en Word con Ctrl + V':'No se pudo copiar; usa el botón de descarga');
+}
+
+/* ============================================================
+   EXPORTACIÓN WORD (MHTML .doc con imágenes incrustadas)
+   ============================================================ */
+function dl(url,name){ const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{a.remove(); if(url.startsWith('blob:')) URL.revokeObjectURL(url);},800); }
+function slug(s){ return unacc(s).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,50)||'tesis'; }
+const REFS_PLS=[
+  ['Fornell, C. y Larcker, D. F. (1981). Evaluating structural equation models with unobservable variables and measurement error. <i>Journal of Marketing Research, 18</i>(1), 39–50.','https://doi.org/10.2307/3151312'],
+  ['Hair, J. F., Hult, G. T. M., Ringle, C. M., Sarstedt, M., Castillo-Apraiz, J., Cepeda-Carrión, G. y Roldán, J. L. (2019). <i>Manual de partial least squares structural equation modeling (PLS-SEM)</i> (2.ª ed.). OmniaScience.','https://doi.org/10.3926/oss.37'],
+  ['Henseler, J., Ringle, C. M. y Sarstedt, M. (2015). A new criterion for assessing discriminant validity in variance-based structural equation modeling. <i>Journal of the Academy of Marketing Science, 43</i>(1), 115–135.','https://doi.org/10.1007/s11747-014-0403-8']
+];
+function refsFor(){
+  const a=[[AU().ref,AU().url]];
+  const all = S.alcance==='correlacional' ? a : a.concat(REFS_PLS);
+  return all.slice().sort((x,y)=>x[0].replace(/<[^>]+>/g,'').localeCompare(y[0].replace(/<[^>]+>/g,''),'es'));
+}
+const refHtml = r => r[0]+(r[1]?' <a href="'+r[1]+'">'+r[1]+'</a>':'');
+
+async function exportDoc(which){
+  toast('Generando documento…');
+  const imgs=[]; // {name, b64}
+  const figHtml=async f=>{
+    const url=await svgToPng(f.svg,f.W,f.H,2);
+    const name='image'+(imgs.length+1)+'.png'; imgs.push({name,b64:url.split(',')[1]});
+    const maxW=600, w=Math.min(maxW,f.W), h=Math.round(f.H*w/f.W);
+    return '<p class="tnum">Figura '+f.n+'</p><p class="ttitle">'+esc(f.title)+'</p><p class="np" style="text-align:center;line-height:100%"><img width="'+w+'" height="'+h+'" src="file:///C:/tituladora/'+name+'"></p><p class="nota"><i>Nota.</i> '+esc(f.nota)+'</p>';
+  };
+  const P=POH(), M=method();
+  let s1='', s2='';
+  if(which==='all'){
+    s1+='<p class="title">'+esc(getTitle())+'</p>';
+    s1+='<h1>I. PLANTEAMIENTO DEL PROBLEMA</h1><h2>1.1. Formulación del problema</h2><h3>Problema general</h3><p>'+esc(P.pg)+'</p><h3>Problemas específicos</h3>'+P.pe.map((x,i)=>'<p class="li">'+(i+1)+'. '+esc(x)+'</p>').join('');
+    s1+='<h2>1.2. Objetivos</h2><h3>1.2.1. Objetivo general</h3><p>'+esc(P.og)+'</p><h3>1.2.2. Objetivos específicos</h3>'+P.oe.map((x,i)=>'<p class="li">'+(i+1)+'. '+esc(x)+'</p>').join('');
+    s1+='<h1>II. MARCO TEÓRICO</h1><h2>2.4. Hipótesis</h2><h3>2.4.1. Hipótesis general</h3><p>'+esc(P.hg)+'</p><h3>2.4.2. Hipótesis específicas</h3>'+P.he.map((x,i)=>'<p class="li">H'+(i+1)+'. '+esc(x)+'</p>').join('');
+    if(S.showH0) s1+='<h3>Hipótesis nulas</h3><p class="li">H₀. '+esc(P.h0g)+'</p>'+P.h0e.map((x,i)=>'<p class="li">H₀'+(i+1)+'. '+esc(x)+'</p>').join('');
+    s1+='<h2>2.5. Variables</h2><h3>2.5.1. Operacionalización de variables</h3>'+apaBlock(1,opTable(),true);
+    s1+='<h1>III. METODOLOGÍA</h1>';
+    const figs=figures();
+    for(const [t,k] of METH_ORDER){
+      if(k==='pob') s1+='<h2>3.5. Población y muestra</h2>';
+      s1+=(k==='pob'||k==='mue'?'<h3>':'<h2>')+t+(k==='pob'||k==='mue'?'</h3>':'</h2>')+'<p>'+esc(M[k])+'</p>';
+      if(k==='mue'){ const smp=sample(); if(smp && !smp.censal) s1+='<p class="np" style="text-align:center"><i>n</i> = <i>N</i>·<i>Z</i>²·<i>p</i>·<i>q</i> / [(<i>N</i> − 1)·<i>e</i>² + <i>Z</i>²·<i>p</i>·<i>q</i>] = '+smp.n+'</p>'; }
+      if(k==='diseno'){ for(const f of figs) s1+=await figHtml(f); }
+    }
+    s1+='<h1>V. REFERENCIAS</h1>'+refsFor().map(r=>'<p class="ref">'+refHtml(r)+'</p>').join('');
+    s2='<h1>VI. ANEXOS</h1><h2>6.1. Matriz de consistencia</h2>'+apaBlock(2,consTable(),true);
+  } else if(which==='t1'){ s1=apaBlock(1,opTable(),true); }
+  else { s2=apaBlock(2,consTable(),true); }
+
+  const css='@page WordSection1{size:21.0cm 29.7cm;margin:2.54cm 2.54cm 2.54cm 2.54cm;mso-header-margin:35.4pt;mso-footer-margin:35.4pt;}div.WordSection1{page:WordSection1;}'+
+    '@page WordSection2{size:29.7cm 21.0cm;mso-page-orientation:landscape;margin:2.54cm 2.54cm 2.54cm 2.54cm;}div.WordSection2{page:WordSection2;}'+
+    'body{font-family:"Times New Roman";font-size:12pt;}p{margin:0;font-family:"Times New Roman";font-size:12pt;line-height:200%;text-indent:1.27cm;text-align:left;}'+
+    'p.np,p.li,p.tnum,p.ttitle,p.nota,p.title{text-indent:0;}p.li{margin-left:1.27cm;text-indent:-0.63cm;}'+
+    'p.title{text-align:center;font-weight:bold;margin-bottom:12pt;}p.tnum{font-weight:bold;margin-top:12pt;}p.ttitle{font-style:italic;}p.nota{margin-bottom:12pt;}'+
+    'p.ref{margin-left:1.27cm;text-indent:-1.27cm;}'+
+    'h1{font-family:"Times New Roman";font-size:12pt;font-weight:bold;text-align:center;margin:12pt 0 0 0;line-height:200%;}'+
+    'h2{font-family:"Times New Roman";font-size:12pt;font-weight:bold;text-align:left;margin:0;line-height:200%;}'+
+    'h3{font-family:"Times New Roman";font-size:12pt;font-weight:bold;font-style:italic;text-align:left;margin:0;line-height:200%;}'+
+    'table.apa td p, table.apa th p{line-height:115%;text-indent:0;}a{color:#0563C1;text-decoration:underline;}';
+  let body='';
+  if(s1) body+='<div class="WordSection1">'+s1+'</div>';
+  if(s1 && s2) body+='<br clear="all" style="page-break-before:always;mso-break-type:section-break">';
+  if(s2) body+='<div class="WordSection2">'+s2+'</div>';
+  const html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>'+esc(getTitle())+'</title><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]--><style>'+css+'</style></head><body lang="ES-PE">'+body+'</body></html>';
+
+  const B='----=_NextPart_TITULADORA_POH';
+  const b64=str=>{ const bytes=new TextEncoder().encode(str); let bin=''; for(let i=0;i<bytes.length;i+=0x8000) bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000)); return btoa(bin); };
+  const fold=s=>s.replace(/.{1,76}/g,'$&\r\n');
+  let mht='MIME-Version: 1.0\r\nContent-Type: multipart/related; boundary="'+B+'"; type="text/html"\r\n\r\n';
+  mht+='--'+B+'\r\nContent-Type: text/html; charset="utf-8"\r\nContent-Transfer-Encoding: base64\r\nContent-Location: file:///C:/tituladora/documento.htm\r\n\r\n'+fold(b64(html))+'\r\n';
+  imgs.forEach(im=>{ mht+='--'+B+'\r\nContent-Type: image/png\r\nContent-Transfer-Encoding: base64\r\nContent-Location: file:///C:/tituladora/'+im.name+'\r\n\r\n'+fold(im.b64)+'\r\n'; });
+  mht+='--'+B+'--\r\n';
+  const name=(which==='all'?'POH_':which==='t1'?'Tabla1_Operacionalizacion_':'Tabla2_Matriz_consistencia_')+slug(getTitle())+'.doc';
+  dl(URL.createObjectURL(new Blob([mht],{type:'application/msword'})),name);
+  toast('Documento descargado: ábrelo con Word');
+}
+
+/* ============================================================
+   SESIÓN: archivo, nuevo, ejemplo
+   ============================================================ */
+function saveFile(){
+  const blob=new Blob([JSON.stringify({app:'tituladora-poh-unasam',version:1,fecha:new Date().toISOString(),data:S},null,2)],{type:'application/json'});
+  dl(URL.createObjectURL(blob),'sesion_'+slug(getTitleSafe())+'.json'); toast('Sesión guardada como archivo');
+}
+function getTitleSafe(){ try{ return S.alcance?getTitle():'tesis'; }catch(e){ return 'tesis'; } }
+$('#bSave').onclick=saveFile;
+$('#bOpen').onclick=()=>$('#fileIn').click();
+$('#fileIn').onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ const j=JSON.parse(r.result); if(j.app!=='tituladora-poh-unasam'||!j.data) throw 0; S=merge(defaults(),j.data); save(); render(true); toast('Sesión abierta'); }catch(err){ toast('El archivo no es una sesión válida de esta app'); } e.target.value=''; };
+  r.readAsText(f);
+};
+$('#bNew').onclick=()=>{ if(confirm('¿Empezar un proyecto nuevo? Se borrará la sesión actual de este navegador (guárdala antes como archivo si la necesitas).')){ S=defaults(); save(); render(true); toast('Proyecto nuevo'); } };
+function loadExample(){
+  if((filled(S.v1)||filled(S.med)) && !confirm('Se reemplazarán los datos actuales por un ejemplo. ¿Continuar?')) return;
+  const keep=S.alcance||'explicativo', mod=S.modelo;
+  S=defaults(); S.alcance=keep; S.modelo=keep==='explicativo'?mod:'estandar'; S.tipo=keep==='explicativo'?'aplicada':'basica';
+  S.pob='los colaboradores'; S.org='la Municipalidad Provincial de Huaraz'; S.lugar='Huaraz'; S.N='180';
+  if(isMed()){
+    S.factores=[
+      {name:'Liderazgo transformacional',g:'auto',def:'',ind:'Influencia idealizada\nMotivación inspiradora\nEstimulación intelectual\nConsideración individual'},
+      {name:'Comunicación interna',g:'auto',def:'',ind:'Claridad de la información\nOportunidad de la información\nCanales de comunicación'},
+      {name:'Reconocimiento laboral',g:'auto',def:'',ind:'Reconocimiento verbal\nIncentivos\nOportunidades de desarrollo'}];
+    S.med={name:'Satisfacción laboral',g:'auto',def:'',ind:'Satisfacción con el trabajo\nSatisfacción con el entorno\nSatisfacción con la supervisión'};
+    S.dep={name:'Desempeño laboral',g:'auto',def:'',ind:'Cumplimiento de metas\nCalidad del trabajo\nIniciativa\nTrabajo en equipo'};
+  } else {
+    S.v1={name:'Clima organizacional',g:'auto',def:'',dims:[
+      {name:'Comunicación',g:'auto',ind:'Comunicación horizontal\nComunicación vertical\nCanales de comunicación'},
+      {name:'Liderazgo',g:'auto',ind:'Estilo de dirección\nToma de decisiones\nApoyo del jefe'},
+      {name:'Condiciones laborales',g:'auto',ind:'Ambiente físico\nRecursos y materiales\nSeguridad en el trabajo'}]};
+    S.v2={name:'Desempeño laboral',g:'auto',def:'',dims:[
+      {name:'Productividad',g:'auto',ind:'Cumplimiento de metas\nUso eficiente del tiempo'},
+      {name:'Calidad del trabajo',g:'auto',ind:'Precisión\nAtención al usuario'},
+      {name:'Compromiso',g:'auto',ind:'Identificación institucional\nIniciativa'}]};
+  }
+  S.step=1; save(); render(true); toast('Ejemplo cargado: revisa y reemplaza con tus datos');
+}
+
+/* Modal: fuentes y uso responsable */
+const LINKS=[
+  ['Guía institucional',[
+    ['Universidad Nacional Santiago Antúnez de Mayolo. (2026). <i>Reglamento de Grados y Títulos de la UNASAM</i> (Anexo 2: estructura del proyecto de tesis cuantitativo).',null],
+    ['Repositorio Institucional UNASAM (tesis de la Facultad de Administración y Turismo).','https://repositorio.unasam.edu.pe/']]],
+  ['Artículos guía (FAT-UNASAM)',[
+    ['Carbajulca Milla, M. J. y Lirio-Loli, F. A. (2025). <i>Environmental awareness factors that influence pro-environmental behavior of tourism students at UNASAM, Huaraz, 2025</i>. SSRN.','https://doi.org/10.2139/ssrn.5549521'],
+    ['Norabuena, P., Lirio-Loli, F. A., Figueroa, I. y Rodríguez, J. (2025). <i>Application of Dijkstra’s algorithm for shortest path identification in Ancash, Peru</i>. SSRN.','https://doi.org/10.2139/ssrn.5363591']]],
+  ['Autores de referencia metodológica (seleccionables)',[
+    [AUT.hs2014.ref+' <br><small>Páginas citadas: alcance correlacional p. 93; explicativo p. 95; diseño no experimental p. 152; transeccional p. 154; correlacional-causal p. 157; confiabilidad p. 200; validez de contenido p. 201; validez de expertos p. 204; alfa de Cronbach p. 208; cuestionario p. 217; escala Likert p. 238.</small>',HS_URL],
+    [AUT.vara2012.ref+' <br><small>Abrir en la página exacta: <a href="'+VARA_URL+'#page=202" target="_blank" rel="noopener noreferrer">tipo aplicada/básica (p. 202)</a> · <a href="'+VARA_URL+'#page=203" target="_blank" rel="noopener noreferrer">diseños (p. 203)</a> · <a href="'+VARA_URL+'#page=210" target="_blank" rel="noopener noreferrer">correlacional y explicativo (p. 210)</a> · <a href="'+VARA_URL+'#page=211" target="_blank" rel="noopener noreferrer">hipótesis causales (p. 211)</a> · <a href="'+VARA_URL+'#page=227" target="_blank" rel="noopener noreferrer">muestra (p. 227)</a> · <a href="'+VARA_URL+'#page=297" target="_blank" rel="noopener noreferrer">alfa de Cronbach (p. 297)</a> · <a href="'+VARA_URL+'#page=303" target="_blank" rel="noopener noreferrer">criterio de jueces (p. 303)</a> · <a href="'+VARA_URL+'#page=351" target="_blank" rel="noopener noreferrer">correlación (p. 351)</a> · <a href="'+VARA_URL+'#page=352" target="_blank" rel="noopener noreferrer">causalidad (p. 352)</a></small>',VARA_URL]]],
+  ['',[
+    [AUT.bernal2010.ref+' <br><small>Páginas citadas: investigación correlacional p. 114; explicativa o causal p. 115; seccional o transversal p. 118; muestreo aleatorio simple p. 164; confiabilidad p. 247; cuestionario p. 250; juicio de expertos p. 255.</small>',AUT.bernal2010.url],
+    [AUT.vill2020.ref+' <br><small>Páginas citadas: investigación aplicada p. 61; correlacional p. 62; explicativa p. 63; no experimental p. 66; transeccional correlacional-causal p. 67; tamaño de muestra p. 81; cuestionario p. 127; juicio de expertos p. 149; alfa de Cronbach p. 153; estadística inferencial p. 161; rho de Spearman p. 174.</small>',AUT.vill2020.url]]],
+  ['Metodología PLS-SEM (alcance explicativo)',[
+    ['Hair, J. F., Hult, G. T. M., Ringle, C. M., Sarstedt, M., Castillo-Apraiz, J., Cepeda-Carrión, G. y Roldán, J. L. (2019). <i>Manual de partial least squares structural equation modeling (PLS-SEM)</i> (2.ª ed.). OmniaScience. (Acceso abierto).','https://doi.org/10.3926/oss.37'],
+    ['Fornell, C. y Larcker, D. F. (1981). Evaluating structural equation models with unobservable variables and measurement error. <i>Journal of Marketing Research, 18</i>(1), 39–50.','https://doi.org/10.2307/3151312'],
+    ['Henseler, J., Ringle, C. M. y Sarstedt, M. (2015). A new criterion for assessing discriminant validity in variance-based structural equation modeling. <i>Journal of the Academy of Marketing Science, 43</i>(1), 115–135.','https://doi.org/10.1007/s11747-014-0403-8']]],
+  ['Formato y software',[
+    ['American Psychological Association. (2020). <i>Tables</i> [Guía de estilo APA 7].','https://apastyle.apa.org/style-grammar-guidelines/tables-figures/tables'],
+    ['SmartPLS GmbH. (s. f.). <i>SmartPLS 4</i> [Software].','https://www.smartpls.com/']]]
+];
+function openModal(html){ $('#modalBody').innerHTML=html; $('#modal').classList.add('on'); }
+$('#modalClose').onclick=()=>$('#modal').classList.remove('on');
+$('#modal').onclick=e=>{ if(e.target.id==='modal') $('#modal').classList.remove('on'); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') $('#modal').classList.remove('on'); });
+$('#bRefs').onclick=()=>openModal('<h3>Fuentes y referencias</h3><p class="hint" style="margin-top:0">Todos los enlaces son DOI o páginas oficiales y se abren en una pestaña nueva.</p><div class="refs">'+LINKS.map(([g,items])=>'<div class="grp">'+g+'</div>'+items.map(r=>'<p>'+r[0]+(r[1]?' <a href="'+r[1]+'" target="_blank" rel="noopener noreferrer">'+r[1]+'</a>':'')+'</p>').join('')).join('')+'</div>');
+$('#bHelp').onclick=()=>openModal('<h3>Uso responsable</h3><div style="font-size:14.5px"><p>Esta herramienta genera una <b>estructura base</b> coherente (título, problemas, objetivos, hipótesis, tablas y metodología) siguiendo el formato de la Escuela de Administración. No reemplaza tu marco teórico ni la revisión de tu asesor.</p><ul><li>Fundamenta tus variables, dimensiones e indicadores con autores y cítalos en APA 7.</li><li>Adapta la redacción a tu realidad problemática.</li><li>El Reglamento de Grados y Títulos UNASAM (2026) establece un máximo de 20 % de uso de inteligencia artificial y exige el reporte de similitud de Turnitin.</li><li>Tu información se guarda solo en este navegador. Usa <b>Guardar sesión</b> para llevarla a otra computadora.</li></ul></div>');
+
+/* Temas (preferencia del navegador, independiente de la sesión) */
+const THEME_KEY='tituladora-poh-tema';
+function applyTheme(t){ document.documentElement.setAttribute('data-theme',t); $('#themeSel').value=t; try{localStorage.setItem(THEME_KEY,t);}catch(e){} }
+$('#themeSel').onchange=e=>applyTheme(e.target.value);
+try{ applyTheme(localStorage.getItem(THEME_KEY)||'azul'); }catch(e){ applyTheme('azul'); }
+
+render(false);
+</script>
+</body>
+</html>
